@@ -90,12 +90,12 @@ router.put("/change-password", authMiddleware, async (req, res) => {
     }
 
     // Verify old password
-    const isMatch = user.password === oldPassword || await bcrypt.compare(oldPassword, user.password);
+    const isMatch = employee.password === oldPassword || await bcrypt.compare(oldPassword, employee.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Incorrect old password" });
     }
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedPassword;
+    employee.password = hashedPassword;
 
     // Validate new password strength
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
