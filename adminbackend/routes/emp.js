@@ -1,4 +1,4 @@
-// admin/backend/routes/employeeRoutes.js
+
 const express = require('express');
 const { addEmployee, getEmployees,deleteEmployee} = require('../controllers/empController');
 

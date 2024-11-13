@@ -50,7 +50,7 @@ exports.loginUser = async (req, res) => {
         return res.status(400).json({ message: "Old password is incorrect" });
       }
 
-      // Validate new password (min 8 chars, uppercase, lowercase, digit, special character)
+    
       const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
       if (!passwordRegex.test(newPassword)) {
         return res.status(400).json({

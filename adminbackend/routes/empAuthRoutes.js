@@ -1,4 +1,3 @@
-// admin/backend/routes/employeeAuthRoutes.js
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const Employee = require("../models/employeeData");
@@ -16,8 +15,9 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Check if the password is stored in plain text or hashed
-    const isMatch = employee.password === password || await bcrypt.compare(password, employee.password);
+    const isMatch =
+      employee.password === password ||
+      (await bcrypt.compare(password, employee.password));
 
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
@@ -31,7 +31,6 @@ router.post("/login", async (req, res) => {
     );
 
     res.json({ token, employee, message: "Login successful" });
-
   } catch (error) {
     res.status(500).json({ message: "Error logging in", error });
   }
@@ -60,7 +59,6 @@ router.post("/login", async (req, res) => {
 //   }
 // });
 
-
 const authMiddleware = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) {
@@ -68,7 +66,10 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, "@453$^4532#@$!%^!T~Yvfwgd@$^%TyvgdY48IHYEQYTREDJYKFVDK");
+    const decoded = jwt.verify(
+      token,
+      "@453$^4532#@$!%^!T~Yvfwgd@$^%TyvgdY48IHYEQYTREDJYKFVDK"
+    );
     req.user = { id: decoded.id };
     next();
   } catch (err) {
@@ -76,8 +77,6 @@ const authMiddleware = (req, res, next) => {
     return res.status(401).json({ message: "Token is not valid" });
   }
 };
-
-
 
 router.put("/change-password", authMiddleware, async (req, res) => {
   const { oldPassword, newPassword } = req.body;
@@ -90,7 +89,9 @@ router.put("/change-password", authMiddleware, async (req, res) => {
     }
 
     // Verify old password
-    const isMatch = employee.password === oldPassword || await bcrypt.compare(oldPassword, employee.password);
+    const isMatch =
+      employee.password === oldPassword ||
+      (await bcrypt.compare(oldPassword, employee.password));
     if (!isMatch) {
       return res.status(400).json({ message: "Incorrect old password" });
     }
@@ -98,10 +99,12 @@ router.put("/change-password", authMiddleware, async (req, res) => {
     employee.password = hashedPassword;
 
     // Validate new password strength
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(newPassword)) {
       return res.status(400).json({
-        message: "New password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a digit, and a special character.",
+        message:
+          "New password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a digit, and a special character.",
       });
     }
 
@@ -115,7 +118,6 @@ router.put("/change-password", authMiddleware, async (req, res) => {
     res.status(500).json({ message: "Error changing password" });
   }
 });
-
 
 module.exports = router;
 // router.put("/change-password", authMiddleware, async (req, res) => {

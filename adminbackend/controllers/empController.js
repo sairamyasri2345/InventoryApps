@@ -11,7 +11,7 @@ exports.addEmployee = async (req, res) => {
   }
 
   try {
-    // Check for existing employeeID or email
+  
     const existingEmployee = await Employee.findOne({ $or: [{ employeeID }, { email }] });
     if (existingEmployee) {
       return res.status(400).json({ message: "Employee ID or email already exists." });
