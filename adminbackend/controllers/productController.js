@@ -1,27 +1,4 @@
-// const Product = require('../models/product');
 
-// const addProduct = async (req, res) => {
-//   try {
-//     const product = new Product(req.body);
-//     await product.save();
-//     res.status(201).json(product);
-//   } catch (error) {
-//     console.error('Error adding product:', error);
-//     res.status(400).json({ message: "Error adding product", error });
-//   }
-// };
-
-// const getProducts = async (req, res) => {
-//   try {
-//     const products = await Product.find();
-//     res.json(products);
-//   } catch (error) {
-//     console.error('Error fetching products:', error);
-//     res.status(500).json({ message: "Error fetching products", error });
-//   }
-// };
-
-// module.exports = { addProduct, getProducts };
 const Product = require('../models/product');
 
 // Add product

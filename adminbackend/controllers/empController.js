@@ -4,9 +4,9 @@ const Employee = require('../models/employeeData');
 // Add a new employee
 
 exports.addEmployee = async (req, res) => {
-  const { name, employeeID, email, password, designation,department,phonenumber } = req.body;
+  const { name, employeeID, email, password, designation } = req.body;
 
-  if (!name || !employeeID || !email || !password || !designation || !department|| !phonenumber) {
+  if (!name || !employeeID || !email || !password || !designation ) {
     return res.status(400).json({ message: "All fields are required." });
   }
 
@@ -17,7 +17,7 @@ exports.addEmployee = async (req, res) => {
       return res.status(400).json({ message: "Employee ID or email already exists." });
     }
 
-    const newEmployee = new Employee({ name, employeeID, email, password, designation });
+    const newEmployee = new Employee({ name, employeeID, email, password, designation});
     await newEmployee.save();
     res.status(201).json(newEmployee);
   } catch (error) {
@@ -48,5 +48,32 @@ exports.deleteEmployee = async (req, res) => {
   } catch (error) {
     console.error("Error deleting employee:", error);
     res.status(500).json({ message: "Error deleting employee", error });
+  }
+};
+
+
+exports.updateEmployee = async (req, res) => {
+  const { id } = req.params;
+  const { name, employeeID, email, password, designation} = req.body;
+
+  if (!name || !employeeID || !email || !password || !designation) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
+  try {
+    const updatedEmployee = await Employee.findByIdAndUpdate(
+      id,
+      { name, employeeID, email, password, designation },
+      { new: true }
+    );
+
+    if (!updatedEmployee) {
+      return res.status(404).json({ message: "Employee not found." });
+    }
+
+    res.status(200).json(updatedEmployee);
+  } catch (error) {
+    console.error("Error updating employee:", error);
+    res.status(500).json({ message: "Error updating employee", error });
   }
 };
