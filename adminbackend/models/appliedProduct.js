@@ -9,6 +9,7 @@ const appliedProductSchema = new mongoose.Schema({
   date: { type: Date, required: true },
   // employeeEmail: { type: String, required: true },
   status: { type: String, default: 'pending' },
+  appliedAt: { type: Date, default: Date.now }, 
 });
 
 module.exports = mongoose.model('AppliedProducts', appliedProductSchema);

@@ -170,13 +170,13 @@ const sendEmail = (to, message) => {
   port:465, 
   secure: true,
     auth: {
-      user: 'usairamyasri@gmail.com',
-      pass: 'hcabqbadxxewptmh',
+      user: 'atmoslifestyleinventory@gmail.com',
+      pass: 'guchpatpjzrzwsxn',
     },
   });
 
   const mailOptions = {
-    from: 'usairamyasri@gmail.com',
+    from: 'atmoslifestyleinventory@gmail.com',
     to,
     subject: 'Product Application Status Update',
     text: message,
