@@ -7,6 +7,7 @@ const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const employeeAuthRoutes = require("./routes/empAuthRoutes");
 const appliedProductRoutes = require("./routes/appliedRoute");
+const inventtoryRoue=require("./routes/inventoryroute")
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -24,9 +25,10 @@ useNewUrlParser: true,
 app.use("/api/employees", employeeRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/inventoryManager", inventtoryRoue);
 app.use("/api/employees", employeeAuthRoutes);
 app.use('/api/appliedProducts', appliedProductRoutes);
 
 
-const PORT = 3002;
+const PORT = 3003;
 app.listen(PORT, () => console.log(`Admin backend running on port ${PORT}`));

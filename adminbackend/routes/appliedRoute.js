@@ -56,7 +56,7 @@ const sendEmpemail = (to, message) => {
 
   const mailOptions = {
     from: 'atmoslifestyleinventory@gmail.com',
-    to: 'admin@atmoslifestyle.com', 
+    to: ['admin@atmoslifestyle.com', 'srikanthraja@atmoslifestyle.com'],
     subject: 'Product Application Submitted',
     html: message,
   };
@@ -118,7 +118,7 @@ const sendAdminEmail = async (message) => {
 
   const mailOptions = {
     from: 'atmoslifestyleinventory@gmail.com',
-    to: 'admin@atmoslifestyle.com',
+    to: ['admin@atmoslifestyle.com', 'srikanthraja@atmoslifestyle.com'],
     subject: 'Product Application Edit/Delete Notification',
     html: message,
   };
@@ -164,47 +164,6 @@ router.get('/', async (req, res) => {
 
 
 
-// router.put('/update-status/:id', async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { status } = req.body; // New status value (approved, pending, not available)
-
-//     // Update the status of the applied product in the database
-//     const appliedProduct = await AppliedProduct.findByIdAndUpdate(id, { status }, { new: true });
-//     if (!appliedProduct) {
-//       return res.status(404).json({ message: 'Applied product not found' });
-//     }
-
-//     // Compose the email message based on the new status
-//     let emailMessage = '';
-//     switch (status) {
-//       case 'approved':
-//         emailMessage = `Congratulations! Your application for the product "${appliedProduct.productName}" has been approved.`;
-//         break;
-//       case 'not available':
-//         emailMessage = `We regret to inform you that the product "${appliedProduct.productName}" you applied for is currently not available.`;
-//         break;
-//       case 'pending':
-//         emailMessage = `Your application for the product "${appliedProduct.productName}" is still pending. Please check back later for updates.`;
-//         break;
-//       default:
-//         emailMessage = `The status of your product application has been updated.`;
-//         break;
-//     }
-
-//     // Send email notification to the employee
-//     await sendEmail(Employee.email, emailMessage);
-//     console.log(Employee.email,"email",Employee)
-
-//     res.json({ message: 'Status updated and email sent', appliedProduct });
-//   } catch (error) {
-//     console.error("Error updating status:", error);
-//     res.status(500).json({ message: error.message });
-//   }
-// });
-
-// Function to send email
-
 router.put('/update-status/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -217,31 +176,30 @@ router.put('/update-status/:id', async (req, res) => {
     }
 
     // Find the employee's email using the employeeID from the applied product
-    const employee = await Employee.findOne({ employeeID: appliedProduct.employeeID });
-    if (!employee) {
-      return res.status(404).json({ message: 'Employee not found' });
-    }
+    // const employee = await Employee.findOne({ employeeID: appliedProduct.employeeID });
+    // if (!employee) {
+    //   return res.status(404).json({ message: 'Employee not found' });
+    // }
 
     // Compose the email message based on the new status
     let emailMessage = '';
     switch (status) {
-      case 'approved':
+      case 'Approved':
         emailMessage = `Congratulations! Your application for the product "${appliedProduct.productName}" has been approved.`;
         break;
-      case 'not available':
-        emailMessage = `We regret to inform you that the product "${appliedProduct.productName}" you applied for is currently not available.`;
+      case 'Rejected':
+        emailMessage = `We regret to inform you that the product "${appliedProduct.productName}" is rejected`;
         break;
-      case 'pending':
-        emailMessage = `Your application for the product "${appliedProduct.productName}" is still pending. Please check back later for updates.`;
-        break;
+      
       default:
         emailMessage = `The status of your product application has been updated.`;
         break;
     }
 
     // Send email notification to the employee
-    await sendEmail(employee.email, emailMessage);
-    console.log(employee.email, "email");
+    // await sendEmail(employee.email, emailMessage);  
+    await sendEmail(emailMessage);
+   
 
     res.json({ message: 'Status updated and email sent', appliedProduct });
   } catch (error) {
@@ -250,8 +208,75 @@ router.put('/update-status/:id', async (req, res) => {
   }
 });
 
-
 const sendEmail = (to, message) => {
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com', 
+  port:465, 
+  secure: true,
+    auth: {
+      user: 'atmoslifestyleinventory@gmail.com',
+      pass: 'guchpatpjzrzwsxn',
+    },
+  });
+
+  const mailOptions = {
+    from: 'atmoslifestyleinventory@gmail.com',
+    to:"admin@atmoslifestyle.com",
+    subject: 'Product Application Status Update',
+    text: message,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log('Error sending email:', error);
+    } else {
+      console.log('Email sent:', info.response);
+    }
+  });
+};
+
+router.put('/delivery-status/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { deliveryStatus } = req.body;
+
+    // Update the delivery status in the database
+    const appliedProduct = await AppliedProduct.findByIdAndUpdate(
+      id,
+      { deliveryStatus },
+      { new: true }
+    );
+
+    if (!appliedProduct) {
+      return res.status(404).json({ message: 'Applied product not found' });
+    }
+const employee = await Employee.findOne({ employeeID: appliedProduct.employeeID });
+    if (!employee) {
+      return res.status(404).json({ message: 'Employee not found' });
+    }
+
+    // Compose the email message based on the new status
+    let emailMessage = '';
+    switch (status) {
+      case 'Approved':
+        emailMessage = `Congratulations! Your application for the product "${appliedProduct.productName}" has been approved.`;
+        break;
+      case 'Rejected':
+        emailMessage = `We regret to inform you that the product "${appliedProduct.productName}" is Rejected.`;
+        break;
+   
+      default:
+        emailMessage = `The status of your product application has been updated.`;
+        break;
+    }
+    await sendDeliveryEmail(employee.email,emailMessage);
+    res.json({ message: 'Delivery status updated successfully', appliedProduct });
+  } catch (error) {
+    console.error('Error updating delivery status:', error);
+    res.status(500).json({ message: 'Server error. Unable to update delivery status.' });
+  }
+});
+const sendDeliveryEmail = (to, message) => {
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com', 
   port:465, 
@@ -277,5 +302,76 @@ const sendEmail = (to, message) => {
     }
   });
 };
+router.put('/received-status/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { receivedStatus } = req.body;
+
+    // Update the received status in the database
+    const appliedProduct = await AppliedProduct.findByIdAndUpdate(
+      id,
+      { receivedStatus },
+      { new: true }
+    );
+
+    if (!appliedProduct) {
+      return res.status(404).json({ message: 'Applied product not found' });
+    }
+
+    // Get the employee's details for the applied product
+    const employee = await Employee.findOne({ employeeID: appliedProduct.employeeID });
+    if (!employee) {
+      return res.status(404).json({ message: 'Employee not found' });
+    }
+
+    // Compose the email message for the admin
+    const emailMessage = `
+      <h3>Received Status Updated</h3>
+      <p><strong>Product Name:</strong> ${appliedProduct.productName}</p>
+      <p><strong>Employee Name:</strong> ${appliedProduct.employeeName}</p>
+      <p><strong>Employee Email:</strong> ${employee.email}</p>
+      <p><strong>Received Status:</strong> ${receivedStatus}</p>
+    `;
+
+    // Send the email notification to the admin
+    await sendReceivedStatusEmail(emailMessage);
+
+    res.json({ message: 'Received status updated and email sent successfully', appliedProduct });
+  } catch (error) {
+    console.error('Error updating received status:', error);
+    res.status(500).json({ message: 'Server error. Unable to update received status.' });
+  }
+});
+
+// Helper function to send email notification to the admin
+const sendReceivedStatusEmail = async (message) => {
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+      user: 'atmoslifestyleinventory@gmail.com',
+      pass: 'guchpatpjzrzwsxn',
+    },
+  });
+
+  const mailOptions = {
+    from: 'atmoslifestyleinventory@gmail.com',
+    to: 'admin@atmoslifestyle.com',
+    subject: 'Received Status Updated',
+    html: message,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+    } else {
+      console.log('Email sent:', info.response);
+    }
+  });
+};
+
+
+
 
 module.exports = router;

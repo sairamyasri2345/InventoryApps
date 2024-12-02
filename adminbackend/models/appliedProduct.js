@@ -8,7 +8,9 @@ const appliedProductSchema = new mongoose.Schema({
   quantity: { type: Number, required: true },
   date: { type: Date, required: true },
   // employeeEmail: { type: String, required: true },
-  status: { type: String, default: 'pending' },
+  status: { type: String, default: 'Requested' },
+  deliveryStatus: { type: String, default: 'Pending' }, 
+  receivedStatus:{type:String,default:"Not Received"},
   appliedAt: { type: Date, default: Date.now }, 
 });
 
