@@ -74,7 +74,7 @@ const Login = () => {
       return;
     }
     try {
-      const response = await axios.post("http://localhost:3003/api/inventoryManager/login", { email, password }, {
+      const response = await axios.post("https://inventoryappsbackend.onrender.com/api/inventoryManager/login", { email, password }, {
         headers: { "Content-Type": "application/json" }
       });
 
@@ -172,7 +172,7 @@ const Login = () => {
             <button type="submit" className="btn btn-success w-100 btn-lg my-3 rounded-5">
               LOGIN
             </button>
-            <div className="text-center">
+            {/* <div className="text-center">
               <h5>(or)</h5>
               <h5 className="my-3">
                 Don't have an account?
@@ -181,7 +181,7 @@ const Login = () => {
                 </Link>
                 Here
               </h5>
-            </div>
+            </div> */}
           </form>
         </div>
       </div>
