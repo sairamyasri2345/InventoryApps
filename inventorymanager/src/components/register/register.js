@@ -94,7 +94,7 @@ const EmpSignUp = () => {
       if (!validateForm()) return;
 
       try {
-        const response = await axios.post("https://inventoryappsbackend.onrender.com/api/inventoryManager/register", {
+        const response = await axios.post("http://localhost:3003/api/inventoryManager/register", {
           username: uname,
           email,
           password,

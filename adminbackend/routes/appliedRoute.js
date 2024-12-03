@@ -257,7 +257,7 @@ const employee = await Employee.findOne({ employeeID: appliedProduct.employeeID 
 
     // Compose the email message based on the new status
     let emailMessage = '';
-    switch (status) {
+    switch (deliveryStatus) {
       case 'Approved':
         emailMessage = `Congratulations! Your application for the product "${appliedProduct.productName}" has been approved.`;
         break;
