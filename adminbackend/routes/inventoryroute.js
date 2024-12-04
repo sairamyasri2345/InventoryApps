@@ -2,6 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const { registerUser, loginUser,changePassword } = require("../controllers/inventoryadmin");
 const User = require('../models/inventoryadmin');
+require('dotenv').config();
 
 const { authenticateToken } = require('../controllers/authenticateToken')
 
@@ -17,7 +18,7 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, "@453$^4532#@$!%^!T~Yvfwgd@$^%TyvgdY48IHYEQYTREDJYKFVDK"); 
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); 
     req.user = { id: decoded.id }; 
     next();
   } catch (err) {

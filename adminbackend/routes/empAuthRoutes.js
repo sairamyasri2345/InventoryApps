@@ -2,6 +2,8 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const Employee = require("../models/employeeData");
 const bcrypt = require("bcrypt");
+require('dotenv').config();
+
 
 const router = express.Router();
 
@@ -26,7 +28,7 @@ router.post("/login", async (req, res) => {
     // Generate JWT token if authentication is successful
     const token = jwt.sign(
       { id: employee._id, email: employee.email },
-      "@453$^4532#@$!%^!T~Yvfwgd@$^%TyvgdY48IHYEQYTREDJYKFVDK",
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
@@ -68,7 +70,7 @@ const authMiddleware = (req, res, next) => {
   try {
     const decoded = jwt.verify(
       token,
-      "@453$^4532#@$!%^!T~Yvfwgd@$^%TyvgdY48IHYEQYTREDJYKFVDK"
+      process.env.JWT_SECRET,
     );
     req.user = { id: decoded.id };
     next();
