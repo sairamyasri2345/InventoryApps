@@ -2,6 +2,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require('cors');
+require('dotenv').config()
 const employeeRoutes = require("./routes/emp");
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
@@ -13,7 +14,7 @@ app.use(express.json());
 app.use(cors());
 
 // Connect to MongoDB
-mongoose.connect("mongodb+srv://sairamyasri7070:WLm9MNSFGHyyLshL@cluster0.399is.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
+mongoose.connect(process.env.MONGODB_URL, {
 
 useNewUrlParser: true,
   useUnifiedTopology: true,
