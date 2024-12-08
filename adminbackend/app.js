@@ -31,5 +31,5 @@ app.use("/api/employees", employeeAuthRoutes);
 app.use('/api/appliedProducts', appliedProductRoutes);
 
 
-const PORT = 3003;
-app.listen(PORT, () => console.log(`Admin backend running on port ${PORT}`));
+
+app.listen(process.env.PORT, () => console.log(`Admin backend running on port ${process.env.PORT}`));
