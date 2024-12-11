@@ -1,5 +1,5 @@
 {
-  "name": "adminfront",
+  "name": "empfront",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,6 +12,7 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.0.2",
     "react-scripts": "5.0.1",
+    "react-toastify": "^10.0.6",
     "web-vitals": "^4.2.4"
   },
   "scripts": {
