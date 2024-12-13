@@ -13,13 +13,13 @@ app.use(express.json());
 app.use(cors());
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URL, {
+// mongoose.connect(process.env.MONGODB_URL, {
 
-useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("Connected to MongoDB"))
-.catch((error) => console.error("MongoDB connection error:", error));
+// useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// })
+// .then(() => console.log("Connected to MongoDB"))
+// .catch((error) => console.error("MongoDB connection error:", error));
 
 //  routes
 app.use("/api/employees", employeeRoutes);
@@ -31,4 +31,4 @@ app.use('/api/appliedProducts', appliedProductRoutes);
 
 
 
-app.listen(process.env.PORT, () => console.log(`Admin backend running on port ${process.env.PORT}`));
+app.listen(3003, () => console.log(`Admin backend running on port 3003}`));
