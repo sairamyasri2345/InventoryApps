@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 // Connect to MongoDB
-mongoose.connect("mongodb+srv://sairamyasri7070:U94aZ713btu1n6Hz@cluster0.rjhs8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
+mongoose.connect(process.env.MONGODB_URL, {
 
 useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -31,4 +31,4 @@ app.use('/api/appliedProducts', appliedProductRoutes);
 
 
 
-app.listen(3003, () => console.log(`Admin backend running on port 3003`));
+app.listen(process.env.PORT, () => console.log(`Admin backend running on port 3003`));
