@@ -508,7 +508,7 @@ const availableQuantity =
               Close
             </Button>
             <Button variant="success" onClick={handleSaveProduct}>
-              Save
+            Apply
             </Button>
           </Modal.Footer>
         </Modal>
