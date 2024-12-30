@@ -232,7 +232,7 @@ const ProductManagement = ({ darkMode,  filterText}) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="success" onClick={handleSave}>{editMode ? "Update" : "Save"}</Button>
+          <Button variant="success" onClick={handleSave}>{editMode ? "Update Productpp" : "Add Product"}</Button>
         </Modal.Footer>
       </Modal>
 

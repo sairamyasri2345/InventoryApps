@@ -161,10 +161,11 @@ const EmployeeOrders = ({ filterText, onFilterChange }) => {
     <select
       value={product.receivedStatus}
       onChange={(e) => updaterReceivedStatus(product._id, e.target.value)}
+      disabled={product.receivedStatus !== "Pending"}
     >
-   
-      <option value="Received">Received</option>
-      <option value="Not Received">Not Received</option>
+            <option value="Pending">Pending</option>
+      <option value="Delivered">Delivered</option>
+      <option value="Not Delivered">Not Delivered</option>
     </select>
   ) : product.deliveryStatus === "Cancelled" ? (
     <span>Not Delivered</span>

@@ -136,6 +136,7 @@ const AdminProducts = ({ filterText, darkMode }) => {
                         onChange={(e) =>
                           updateStatus(product._id, e.target.value)
                         }
+                        disabled={product.status !== "Requested"}
                       >
                         <option value="Requested">Requested</option>
                         <option value="Approved">Approved</option>

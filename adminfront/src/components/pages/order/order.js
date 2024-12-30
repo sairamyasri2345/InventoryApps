@@ -152,11 +152,12 @@ const AdminProducts = ({ filterText, darkMode }) => {
                         <option value="Rejected">Not Availbale</option>
                       </select>
 </td> */}
-<td className="text-center">
+{/* <td className="text-center">
   {product.status === "Approved" ? (
     <select
       value={product.deliveryStatus}
       onChange={(e) => updateDeliveryStatus(product._id, e.target.value)}
+      disabled={product.deliveryStatus !== "Pending"}
     >
       <option value="Pending">Pending</option>
      
@@ -166,6 +167,29 @@ const AdminProducts = ({ filterText, darkMode }) => {
   ) : product.status === "Rejected" ? (
     <span>Cancelled</span>
   ) : <span>waiting</span>}
+</td> */}
+<td className="text-center">
+  {product.status === "Approved" ? (
+    <select
+      value={product.deliveryStatus}
+      onChange={(e) => updateDeliveryStatus(product._id, e.target.value)}
+      disabled={product.deliveryStatus !== "Pending"}
+    >
+      <option value="Pending">Pending</option>
+      <option value="Delivered">Delivered</option>
+    </select>
+  ) : product.status === "Rejected" ? (
+    <select
+      value={product.deliveryStatus}
+      onChange={(e) => updateDeliveryStatus(product._id, e.target.value)}
+      disabled={product.deliveryStatus !== "Pending"}
+    >
+      <option value="Pending">Pending</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+  ) : (
+    <span>waiting</span>
+  )}
 </td>
 <td className="text-center">
 {product.receivedStatus}

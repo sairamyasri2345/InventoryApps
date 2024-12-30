@@ -10,7 +10,7 @@ const appliedProductSchema = new mongoose.Schema({
   // employeeEmail: { type: String, required: true },
   status: { type: String, default: 'Requested' },
   deliveryStatus: { type: String, default: 'Pending' }, 
-  receivedStatus:{type:String,default:"Not Received"},
+  receivedStatus:{type:String,default:"Pending"},
   appliedAt: { type: Date, default: Date.now }, 
 });
 
