@@ -21,7 +21,7 @@ const Sidebar = ({ darkMode, sidebarCollapsed }) => {
           >
             <div className=" py-3  px-3">
               <img
-                src="https://atmoslifestyle.com/wp-content/uploads/2023/05/Atmos-Beige-Logo-1-1.png"
+                src="https://atmoslifestyle.com/wp-content/uploads/2024/12/Atmos-Logo.png"
                 alt="logo"
                 className={` ${sidebarCollapsed ? "logo" : "Atmos-logo"}`}
               />
