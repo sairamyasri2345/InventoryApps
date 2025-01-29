@@ -1,0 +1,8 @@
+# MONGODB_URL="mongodb+srv://sairamyasri7070:MOOdqanTMtG3z4Sy@cluster0.399is.mongodb.net/?retryWrites=true"&w=majority&appName=Cluster"
+# JWT_SECRET="@453$^4532#@$!%^!T~Yvfwgd@$^%TyvgdY48IHYEQYTREDJYKFVDK"
+# PORT=3003
+
+
+MONGODB_URL=mongodb+srv://sairamyasri7070:U94aZ713btu1n6Hz@cluster0.rjhs8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+PORT=3003 
+JWT_SECRET=asdrtfgyhjudwkmeqnjdebai#$%&#^#$W!%^#$*&284erhjbfugr
