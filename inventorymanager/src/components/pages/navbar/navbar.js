@@ -139,7 +139,7 @@ const EmpNavbar = ({
                 ></i>
                 <div className="d-flex gap-2 justify-content-center align-items-center position-relative">
                   <div className="user-profile">
-                    <p className="profile-initials mx-1">{userInitials}</p>
+                    <p className="profile-initials">{userInitials}</p>
                   </div>
                   <ul
                     className="list-unstyled m-0 d-flex flex-column justify-content-center pt-2"

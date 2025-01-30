@@ -164,7 +164,7 @@
     const fetchEmployees = async (page = 1, limit = pageSize) => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:3003/api/employees", {
+        const response = await axios.get("http://13.232.162.43/api/employees", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setEmployees(response.data);
@@ -185,7 +185,7 @@
     //   if (isValid) {
     //     try {
     //       const response = await axios.post(
-    //         "http://localhost:3003/api/employees/add-employee",
+    //         "http://13.232.162.43/api/employees/add-employee",
     //         employeeData
     //       );
     //       if (response.status === 201) {
@@ -225,7 +225,7 @@
           if (editMode) {
             // Update existing employee
             const response = await axios.put(
-              `http://localhost:3003/api/employees/${currentEmployee._id}`,
+              `http://13.232.162.43/api/employees/${currentEmployee._id}`,
               employeeData
             );
             if (response.status === 200) {
@@ -237,7 +237,7 @@
           } else {
             // Add new employee
             const response = await axios.post(
-              "http://localhost:3003/api/employees/add-employee",
+              "http://13.232.162.43/api/employees/add-employee",
               employeeData
             );
             if (response.status === 201) {
@@ -274,7 +274,7 @@
     const handleDelete = async (id) => {
       console.log("Deleting employee with ID:", id);
       try {
-        await axios.delete(`http://localhost:3003/api/employees/${id}`);
+        await axios.delete(`http://13.232.162.43/api/employees/${id}`);
         fetchEmployees(); // Refresh employee list after deletion
       } catch (error) {
         console.error("Error deleting employee:", error);

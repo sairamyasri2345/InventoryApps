@@ -27,7 +27,7 @@ const AppliedProducts = ({ userData, filterText }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:3003/api/products/products",
+        "http://13.232.162.43/api/products/products",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -40,7 +40,7 @@ const AppliedProducts = ({ userData, filterText }) => {
   const fetchAllAppliedProducts = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3003/api/appliedProducts/all"
+        "http://13.232.162.43/api/appliedProducts/all"
       );
       setAppliedProducts(response.data);
     } catch (error) {
@@ -51,7 +51,7 @@ const AppliedProducts = ({ userData, filterText }) => {
   const fetchAppliedProducts = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3003/api/appliedProducts/${employeeID}`
+        `http://13.232.162.43/api/appliedProducts/${employeeID}`
       );
       setAppliedProducts(response.data);
     } catch (error) {
@@ -69,7 +69,7 @@ const AppliedProducts = ({ userData, filterText }) => {
 
   const fetchAllAppliedProduct = async () => {
     try {
-      const response = await axios.get("http://localhost:3003/api/appliedProducts");
+      const response = await axios.get("http://13.232.162.43/api/appliedProducts");
       const appliedProducts = await response.data;
      console.log(appliedProducts,"prod")
       
@@ -125,7 +125,7 @@ const AppliedProducts = ({ userData, filterText }) => {
 //   try {
 //     const token = localStorage.getItem("token");
 //     const response = await axios.post(
-//       "http://localhost:3003/api/appliedProducts/apply",
+//       "http://13.232.162.43/api/appliedProducts/apply",
 //       {
 //         employeeID,
 //         employeeName,
@@ -183,7 +183,7 @@ const checkDisableState = (appliedAt) => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
-        `http://localhost:3003/api/appliedProducts/apply/${productId}`,
+        `http://13.232.162.43/api/appliedProducts/apply/${productId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
   
@@ -222,7 +222,7 @@ const checkDisableState = (appliedAt) => {
   // const handleDelete = async (id) => {
   //   try {
   //     await axios.delete(
-  //       `http://localhost:3003/api/appliedProducts/apply/${id}`
+  //       `http://13.232.162.43/api/appliedProducts/apply/${id}`
   //     );
   //     setAppliedProducts(
   //       appliedProducts.filter((product) => product._id !== id)
@@ -250,7 +250,7 @@ const checkDisableState = (appliedAt) => {
   //     if (editProduct) {
   //       // Update existing product
   //       await axios.put(
-  //         `http://localhost:3003/api/appliedProducts/apply/${editProduct._id}`,
+  //         `http://13.232.162.43/api/appliedProducts/apply/${editProduct._id}`,
   //         {
   //           quantity,
   //           date,
@@ -266,7 +266,7 @@ const checkDisableState = (appliedAt) => {
   //     } else {
   //       // Create a new application
   //       const response = await axios.post(
-  //         "http://localhost:3003/api/appliedProducts/apply",
+  //         "http://13.232.162.43/api/appliedProducts/apply",
   //         {
   //           employeeID,
   //           employeeName,
@@ -334,7 +334,7 @@ const availableQuantity =
   
       if (editProduct) {
         await axios.put(
-          `http://localhost:3003/api/appliedProducts/apply/${editProduct._id}`,
+          `http://13.232.162.43/api/appliedProducts/apply/${editProduct._id}`,
           {
             quantity,
             date,
@@ -352,7 +352,7 @@ const availableQuantity =
         );
       } else {
         const response = await axios.post(
-          "http://localhost:3003/api/appliedProducts/apply",
+          "http://13.232.162.43/api/appliedProducts/apply",
           {
             employeeID,
             employeeName,
