@@ -23,6 +23,8 @@
 // export default Navbar;
 import React, { useState, useEffect } from "react";
 import "./navbar.css";
+
+
 import { useNavigate } from "react-router-dom";
 
 const EmpNavbar = ({
@@ -37,6 +39,7 @@ const EmpNavbar = ({
   const [currentDate, setCurrentDate] = useState("");
   const [userInitials, setUserInitials] = useState("");
   const [filterText, setFilterText] = useState("");
+  const [notificationCount, setNotificationCount] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -48,7 +51,23 @@ const EmpNavbar = ({
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
-
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+  const fetchNotifications = async () => {
+    try {
+      const response = await fetch("http://13.232.162.43/api/appliedProducts/notifications");
+      const data = await response.json();
+      setNotificationCount(data.length);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+  const handleNotificationClick = async () => {
+    await fetch("http://13.232.162.43/api/appliedProducts/read", { method: "PUT" });
+    setNotificationCount(0);
+    navigate("/layout/orders");
+  };
   useEffect(() => {
     const date = new Date();
     const formattedDate = `${date.getDate()} ${date.toLocaleString("default", {
@@ -137,6 +156,17 @@ const EmpNavbar = ({
                   className="bi bi-fullscreen screen-icons mx-2"
                   onClick={toggleFullScreen}
                 ></i>
+                <i className="bi bi-bell screen-icons mx-2 position-relative" onClick={handleNotificationClick}>
+  {notificationCount > 0 && (
+    <span className="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+      {notificationCount}
+    </span>
+  )}
+  <p>{{notificationCount}}</p>
+</i>
+
+                
+
                 <div className="d-flex gap-2 justify-content-center align-items-center position-relative">
                   <div className="user-profile">
                     <p className="profile-initials">{userInitials}</p>

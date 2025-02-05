@@ -3,7 +3,7 @@ const router = express.Router();
 const AppliedProduct = require('../models/appliedProduct');
 const Product = require('../models/product');
 const nodemailer = require('nodemailer');
-
+const Notification = require("../models/notification");
 const Employee=require("../models/employeeData")
 // Apply a product
 router.post('/apply', async (req, res) => {
@@ -27,7 +27,12 @@ router.post('/apply', async (req, res) => {
       quantity,
       date
     });
+
     await appliedProduct.save();
+    const notification = new Notification({
+      message: `New product request from ${employeeName} for ${product.name}.`,
+    });
+    await notification.save();
     const emailMessage =`
     <h3>Product Application Submitted</h3>
     <p><strong>Employee Email:</strong> ${employee.email}</p>
@@ -372,6 +377,22 @@ const sendReceivedStatusEmail = async (message) => {
 };
 
 
+router.get("/notifications", async (req, res) => {
+  try {
+    const notifications = await Notification.find({ isRead: false });
+    res.json(notifications);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching notifications" });
+  }
+});
+router.put("/notifications/read", async (req, res) => {
+  try {
+    await Notification.updateMany({}, { isRead: true });
+    res.json({ message: "Notifications marked as read" });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating notifications" });
+  }
+});
 
 
 module.exports = router;
