@@ -156,14 +156,17 @@ const EmpNavbar = ({
                   className="bi bi-fullscreen screen-icons mx-2"
                   onClick={toggleFullScreen}
                 ></i>
-                <i className="bi bi-bell screen-icons mx-2 position-relative" onClick={handleNotificationClick}>
-  {notificationCount > 0 && (
-    <span className="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-      {notificationCount}
+<i 
+  className="bi bi-bell screen-icons mx-2 position-relative" 
+  onClick={handleNotificationClick}
+>
+  
+    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+    {notificationCount}
     </span>
-  )}
-  <p>{{notificationCount}}</p>
+ 
 </i>
+
 
                 
 
