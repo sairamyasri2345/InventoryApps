@@ -24,7 +24,7 @@
 import React, { useState, useEffect } from "react";
 import "./navbar.css";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 const EmpNavbar = ({
   userData,
   onFilterChange,
@@ -39,6 +39,7 @@ const EmpNavbar = ({
   const [filterText, setFilterText] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const [notificationCount, setNotificationCount] = useState(0);
 
   const handleLogout = () => {
     window.localStorage.clear();
@@ -48,6 +49,18 @@ const EmpNavbar = ({
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+  useEffect(() => {
+    const fetchNotificationCount = async () => {
+      try {
+        const response = await axios.get("http://13.232.162.43/api/auth/notificationCount");
+        setNotificationCount(response.data.count);
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
+    
+    fetchNotificationCount();
+  }, []);
 
   useEffect(() => {
     const date = new Date();
@@ -137,9 +150,16 @@ const EmpNavbar = ({
                   className="bi bi-fullscreen screen-icons mx-2"
                   onClick={toggleFullScreen}
                 ></i>
+                <i className="bi bi-bell screen-icons mx-2 position-relative">
+  {notificationCount > 0 && (
+    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-yellow-green text-white">
+      {notificationCount}
+    </span>
+  )}
+</i>
                 <div className="d-flex gap-2 justify-content-center align-items-center position-relative">
-                  <div className="user-profile">
-                    <p className="profile-initials">{userInitials}</p>
+                  <div className="user-profile text-center">
+                    <p className="profile-initials ">{userInitials}</p>
                   </div>
                   <ul
                     className="list-unstyled m-0 d-flex flex-column justify-content-center pt-2"

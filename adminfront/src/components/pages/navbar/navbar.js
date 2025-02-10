@@ -1,4 +1,3 @@
-
 // import React from "react";
 // import { useNavigate } from "react-router-dom";
 
@@ -23,7 +22,7 @@
 // export default Navbar;
 import React, { useState, useEffect } from "react";
 import "./navbar.css";
-
+import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
 
@@ -51,23 +50,22 @@ const EmpNavbar = ({
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+
   useEffect(() => {
-    fetchNotifications();
+    const fetchNotificationCount = async () => {
+      try {
+        const response = await axios.get(
+          "http://13.232.162.43/api/auth/notificationCount"
+        );
+        setNotificationCount(response.data.count);
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
+
+    fetchNotificationCount();
   }, []);
-  const fetchNotifications = async () => {
-    try {
-      const response = await fetch("http://13.232.162.43/api/appliedProducts/notifications");
-      const data = await response.json();
-      setNotificationCount(data.length);
-    } catch (error) {
-      console.error("Error fetching notifications:", error);
-    }
-  };
-  const handleNotificationClick = async () => {
-    await fetch("http://13.232.162.43/api/appliedProducts/read", { method: "PUT" });
-    setNotificationCount(0);
-    navigate("/layout/orders");
-  };
+
   useEffect(() => {
     const date = new Date();
     const formattedDate = `${date.getDate()} ${date.toLocaleString("default", {
@@ -98,16 +96,10 @@ const EmpNavbar = ({
   };
 
   return (
-    <div className={`container-fluid ${
-      darkMode ? "dark-mode" : ""
-    }`}>
+    <div className={`container-fluid ${darkMode ? "dark-mode" : ""}`}>
       <div className="row">
         <div className="col-md-12 p-0 m-0">
-          <nav
-            className="navbar navbar-section bg-green text-white px-2"
-
-
-          >
+          <nav className="navbar navbar-section bg-green text-white px-2">
             <div className="container-fluid">
               <input
                 type="checkbox"
@@ -156,22 +148,16 @@ const EmpNavbar = ({
                   className="bi bi-fullscreen screen-icons mx-2"
                   onClick={toggleFullScreen}
                 ></i>
-<i 
-  className="bi bi-bell screen-icons mx-2 position-relative" 
-  onClick={handleNotificationClick}
->
-  
-    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-    {notificationCount}
-    </span>
- 
-</i>
-
-
-                
+                <i className="bi bi-bell screen-icons mx-2 position-relative">
+                  {notificationCount > 0 && (
+                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-yellow-green text-white">
+                      {notificationCount}
+                    </span>
+                  )}
+                </i>
 
                 <div className="d-flex gap-2 justify-content-center align-items-center position-relative">
-                  <div className="user-profile">
+                  <div className="user-profile text-center">
                     <p className="profile-initials">{userInitials}</p>
                   </div>
                   <ul
@@ -191,10 +177,7 @@ const EmpNavbar = ({
                   {dropdownOpen && (
                     <ul className="dropdown-menu dropdown-menu-end show position-absolute dropdown-btn">
                       <li>
-                        <button
-                          className="btn "
-                          onClick={handleLogout}
-                        >
+                        <button className="btn " onClick={handleLogout}>
                           Logout
                         </button>
                       </li>
@@ -211,4 +194,3 @@ const EmpNavbar = ({
 };
 
 export default EmpNavbar;
-

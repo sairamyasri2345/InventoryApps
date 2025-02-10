@@ -1,7 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
-
+const Notification = require("../models/notification");
 const { registerUser, loginUser,changePassword } = require("../controllers/authController");
 const User = require('../models/userschema');
 
@@ -38,6 +38,14 @@ router.get('/me', authenticateToken, async (req, res) => {
     res.json({ data: user });
   } catch (error) {
     res.status(500).json({ message: "Error fetching user data", error });
+  }
+});
+router.get('/notificationCount', async (req, res) => {
+  try {
+    const count = await Notification.countDocuments();
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching notification count' });
   }
 });
 

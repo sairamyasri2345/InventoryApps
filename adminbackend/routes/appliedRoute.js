@@ -29,10 +29,7 @@ router.post('/apply', async (req, res) => {
     });
 
     await appliedProduct.save();
-    const notification = new Notification({
-      message: `New product request from ${employeeName} for ${product.name}.`,
-    });
-    await notification.save();
+    await Notification.create({ message: `New product request from ${employeeName} for ${product.name}.` });
     const emailMessage =`
     <h3>Product Application Submitted</h3>
     <p><strong>Employee Email:</strong> ${employee.email}</p>
@@ -95,6 +92,8 @@ router.put('/apply/:id', async (req, res) => {
       { new: true }
     );
     if (!updatedProduct) return res.status(404).json({ message: 'Applied product not found' });
+    await Notification.findOneAndDelete({ message: { $regex: updatedProduct.productName } });
+    await Notification.create({ message: `Updated request for ${updatedProduct.productName}.` });
     const emailMessage = `
     <h3>Applied Product Updated</h3>
     <p><strong>Product Name:</strong> ${updatedProduct.productName}</p>
@@ -149,6 +148,7 @@ router.delete('/apply/:id', async (req, res) => {
     <p><strong>Quantity:</strong> ${deletedProduct.quantity}</p>
   `;
   await sendAdminEmail(emailMessage); 
+  await Notification.findOneAndDelete({ message: { $regex: deletedProduct.productName } });
     res.json({ message: 'Applied product deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -377,22 +377,7 @@ const sendReceivedStatusEmail = async (message) => {
 };
 
 
-router.get("/notifications", async (req, res) => {
-  try {
-    const notifications = await Notification.find({ isRead: false });
-    res.json(notifications);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching notifications" });
-  }
-});
-router.put("/notifications/read", async (req, res) => {
-  try {
-    await Notification.updateMany({}, { isRead: true });
-    res.json({ message: "Notifications marked as read" });
-  } catch (error) {
-    res.status(500).json({ message: "Error updating notifications" });
-  }
-});
+
 
 
 module.exports = router;

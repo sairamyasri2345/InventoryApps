@@ -20,7 +20,7 @@ const AppliedProducts = ({ userData, filterText }) => {
   const [pageSize, setPageSize] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
   const employeeID = localStorage.getItem("employeeID");
-  const TIME_LIMIT = 20*60*1000 ;
+  const TIME_LIMIT = 20 * 60 * 1000;
   const employeeName = localStorage.getItem("employeeName");
 
   const fetchProducts = async () => {
@@ -69,90 +69,33 @@ const AppliedProducts = ({ userData, filterText }) => {
 
   const fetchAllAppliedProduct = async () => {
     try {
-      const response = await axios.get("http://13.232.162.43/api/appliedProducts");
+      const response = await axios.get(
+        "http://13.232.162.43/api/appliedProducts"
+      );
       const appliedProducts = await response.data;
-     console.log(appliedProducts,"prod")
-      
+      console.log(appliedProducts, "prod");
 
       const counts = appliedProducts.reduce((acc, item) => {
         if (item.status.toLowerCase() === "approved") {
-          acc[item.productName] =
-            (acc[item.productName] || 0) + item.quantity;
+          acc[item.productName] = (acc[item.productName] || 0) + item.quantity;
         }
         return acc;
       }, {});
-      console.log(counts,"prod")
+      console.log(counts, "prod");
       setApprovedCounts(counts);
 
-    
-      console.log(counts,"prod")
+      console.log(counts, "prod");
     } catch (error) {
       console.error("Error fetching applied products:", error);
     }
   };
 
+  const checkDisableState = (appliedAt) => {
+    const elapsedTime = Date.now() - new Date(appliedAt).getTime();
+    console.log(elapsedTime, "time");
 
-//  const handleApplyProduct = async () => {
-//   if (!validateFields()) return;
-
-//   const product = products.find((p) => p._id === selectedProduct);
-//   if (!product) {
-//     setErrors((prevErrors) => ({
-//       ...prevErrors,
-//       quantity: "Invalid product selected",
-//     }));
-//     return;
-//   }
-
-//   const availableQuantity = product.quantity;
-//   console.log(availableQuantity,"quant")
-//   if (parseInt(quantity) <= 0) {
-//     setErrors((prevErrors) => ({
-//       ...prevErrors,
-//       quantity: "Quantity must be greater than 0",
-//     }));
-//     return;
-//   }
-
-//   if (parseInt(quantity) > availableQuantity) {
-//     setErrors((prevErrors) => ({
-//       ...prevErrors,
-//       quantity: `You cannot apply for more than the available quantity (${availableQuantity})`,
-//     }));
-//     return;
-//   }
-
-//   try {
-//     const token = localStorage.getItem("token");
-//     const response = await axios.post(
-//       "http://13.232.162.43/api/appliedProducts/apply",
-//       {
-//         employeeID,
-//         employeeName,
-//         productID: selectedProduct,
-//         quantity,
-//         date,
-//       },
-//       { headers: { Authorization: `Bearer ${token}` } }
-//     );
-//     setAppliedProducts([...appliedProducts, response.data]);
-//     setShowModal(false);
-//     setSelectedProduct("");
-//     setQuantity("");
-//     setDate("");
-//     setErrors({});
-//   } catch (error) {
-//     console.error("Error applying product:", error);
-//   }
-// };
-
-const checkDisableState = (appliedAt) => {
-  const elapsedTime = Date.now() - new Date(appliedAt).getTime();
-  console.log(elapsedTime,"time")
- 
-
-  return elapsedTime >= 15 * 60 * 1000; 
-};
+    return elapsedTime >= 15 * 60 * 1000;
+  };
 
   const handleFieldBlur = (field) => {
     if (!field) {
@@ -171,183 +114,88 @@ const checkDisableState = (appliedAt) => {
     if (field === "quantity") setQuantity(value);
     if (field === "date") setDate(value);
   };
- 
+
   useEffect(() => {
     fetchAppliedProducts();
     // fetchAllAppliedProducts();
     fetchProducts();
-    fetchAllAppliedProduct()
+    fetchAllAppliedProduct();
   }, []);
-  const handleDelete = async (productId,appliedDate) => {
-
+  const handleDelete = async (productId, appliedDate) => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
         `http://13.232.162.43/api/appliedProducts/apply/${productId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-  
-      setAppliedProducts((prev) => prev.filter((prod) => prod._id !== productId));
+
+      setAppliedProducts((prev) =>
+        prev.filter((prod) => prod._id !== productId)
+      );
       toast.success("Product deleted successfully");
     } catch (error) {
       console.error("Error deleting product:", error);
       toast.error("Failed to delete the product");
     }
   };
-  
 
-
-
- 
   // Function to handle the edit action
   const handleEdit = (product) => {
-  
     setEditProduct(product);
     setQuantity(product.quantity);
     setSelectedProduct(product.productID);
     setDate(product.date);
     setShowModal(true);
   };
-  // const handleEdit = (product) => {
-  //   setEditProduct(product);
-  //   setSelectedProduct(product.productID || "");
-  //   setQuantity(product.quantity || "");
-  //   setDate(
-  //     product.date ? new Date(product.date).toISOString().split("T")[0] : ""
-  //   );
-  //   setShowModal(true);
-  // };
-
-  
-  // const handleDelete = async (id) => {
-  //   try {
-  //     await axios.delete(
-  //       `http://13.232.162.43/api/appliedProducts/apply/${id}`
-  //     );
-  //     setAppliedProducts(
-  //       appliedProducts.filter((product) => product._id !== id)
-  //     );
-  //     toast.success("Product deleted successfully");
-  //   } catch (error) {
-  //     console.error("Error deleting applied product:", error);
-  //   }
-  // };
-  // const handleSaveProduct = async () => {
-  //   if (!validateFields()) return;
-  
-  //   // Ensure the quantity is greater than 0
-  //   if (parseInt(quantity) <= 0) {
-  //     setErrors((prevErrors) => ({
-  //       ...prevErrors,
-  //       quantity: "Quantity must be greater than 0",
-  //     }));
-  //     return; // Prevent the save action if quantity is invalid
-  //   }
-  
-  //   try {
-  //     const token = localStorage.getItem("token");
-  
-  //     if (editProduct) {
-  //       // Update existing product
-  //       await axios.put(
-  //         `http://13.232.162.43/api/appliedProducts/apply/${editProduct._id}`,
-  //         {
-  //           quantity,
-  //           date,
-  //         },
-  //         { headers: { Authorization: `Bearer ${token}` } }
-  //       );
-  
-  //       setAppliedProducts((prev) =>
-  //         prev.map((prod) =>
-  //           prod._id === editProduct._id ? { ...prod, quantity, date } : prod
-  //         )
-  //       );
-  //     } else {
-  //       // Create a new application
-  //       const response = await axios.post(
-  //         "http://13.232.162.43/api/appliedProducts/apply",
-  //         {
-  //           employeeID,
-  //           employeeName,
-  //           productID: selectedProduct,
-  //           quantity,
-  //           date,
-  //         },
-  //         { headers: { Authorization: `Bearer ${token}` } }
-  //       );
-  
-  //       setAppliedProducts([...appliedProducts, response.data]);
-  //     }
-  
-  //     setShowModal(false);
-  //     setEditProduct(null);
-  //     setSelectedProduct("");
-  //     setQuantity("");
-  //     setDate("");
-  //     setErrors({});
-  //   } catch (error) {
-  //     console.error("Error saving product:", error);
-  //   }
-  // };
-  
-  const handleSaveProduct = async () => {
+ 
+const handleSaveProduct = async () => {
     if (!validateFields()) return;
-  
+
     const product = products.find((p) => p._id === selectedProduct);
-  if (!product) {
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      quantity: "Invalid product selected",
-    }));
-    return;
-  }
-  const approvedCount =
-  approvedCounts[product.name] || 0;
-  console.log("Product:", product.name, "Approved Count:", approvedCount);
-const availableQuantity =
-  product.quantity - approvedCount;
-  console.log("Available Quantity:", availableQuantity);
+    if (!product) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        quantity: "Invalid product selected",
+      }));
+      return;
+    }
+    const approvedCount = approvedCounts[product.name] || 0;
+    console.log("Product:", product.name, "Approved Count:", approvedCount);
+    const availableQuantity = product.quantity - approvedCount;
+    console.log("Available Quantity:", availableQuantity);
 
+    if (parseInt(quantity) <= 0) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        quantity: "Quantity must be greater than 0",
+      }));
+      return;
+    }
 
-  if (parseInt(quantity) <= 0) {
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      quantity: "Quantity must be greater than 0",
-    }));
-    return;
-  }
+    if (parseInt(quantity) > availableQuantity && availableQuantity !== null) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        quantity: `You cannot apply for more than the available quantity (${availableQuantity})`,
+      }));
+      return;
+    }
 
-  if (parseInt(quantity) > availableQuantity && availableQuantity !== null ) {
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      quantity: `You cannot apply for more than the available quantity (${availableQuantity})`,
-    }));
-    return;
-  }
-
-  
     try {
       const token = localStorage.getItem("token");
-  
 
-  
       if (editProduct) {
         await axios.put(
           `http://13.232.162.43/api/appliedProducts/apply/${editProduct._id}`,
           {
             quantity,
             date,
-         
           },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-  
+
         setAppliedProducts((prev) =>
           prev.map((prod) =>
-            prod._id === editProduct._id
-              ? { ...prod, quantity, date}
-              : prod
+            prod._id === editProduct._id ? { ...prod, quantity, date } : prod
           )
         );
       } else {
@@ -359,14 +207,13 @@ const availableQuantity =
             productID: selectedProduct,
             quantity,
             date,
-  
           },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-  
+
         setAppliedProducts([...appliedProducts, response.data]);
       }
-  
+
       setShowModal(false);
       setEditProduct(null);
       setSelectedProduct("");
@@ -377,8 +224,6 @@ const availableQuantity =
       console.error("Error saving product:", error);
     }
   };
- 
-
 
   const totalPages = Math.ceil(appliedProducts.length / rowsPerPage);
   const startRow = (currentPage - 1) * rowsPerPage;
@@ -396,34 +241,24 @@ const availableQuantity =
     setErrors({});
   };
 
-  // const generatePageRange = () => {
-  //   const pageRange = [];
-  //   const rangeSize = 5;
-  //   const maxRange = Math.min(rangeSize, totalPages);
-  //   let startPage = Math.max(1, currentPage - Math.floor(rangeSize / 2));
-  //   let endPage = Math.min(totalPages, startPage + rangeSize - 1);
-
-  //   if (endPage - startPage < rangeSize - 1) {
-  //     startPage = Math.max(1, endPage - rangeSize + 1);
-  //   }
-
-  //   for (let i = startPage; i <= endPage; i++) {
-  //     pageRange.push(i);
-  //   }
-
-  //   return pageRange;
-  // };
-
-  
   const generatePageRange = () => {
     const rangeSize = 5;
     const maxRange = Math.min(rangeSize, totalPages);
-    const startPage = Math.max(1, Math.min(currentPage - Math.floor(rangeSize / 2), totalPages - maxRange + 1));
+    const startPage = Math.max(
+      1,
+      Math.min(
+        currentPage - Math.floor(rangeSize / 2),
+        totalPages - maxRange + 1
+      )
+    );
     const endPage = Math.min(totalPages, startPage + rangeSize - 1);
-  
-    return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+
+    return Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
   };
-  
+
   const filteredorder = appliedProducts.filter((applied) => {
     return (
       applied.productName?.toLowerCase().includes(filterText?.toLowerCase()) ||
@@ -452,7 +287,7 @@ const availableQuantity =
           </Modal.Header>
           <Modal.Body>
             <Form>
-              <Form.Group className="mb-3"> 
+              <Form.Group className="mb-3">
                 <Form.Label>Employee Name</Form.Label>
                 <Form.Control type="text" value={employeeName} readOnly />
               </Form.Group>
@@ -478,7 +313,7 @@ const availableQuantity =
                   <div className="text-danger">{errors.selectedProduct}</div>
                 )}
               </Form.Group>
-              <Form.Group  className="mb-3">
+              <Form.Group className="mb-3">
                 <Form.Label>Quantity</Form.Label>
                 <Form.Control
                   type="number"
@@ -492,7 +327,7 @@ const availableQuantity =
                   <div className="text-danger">{errors.quantity}</div>
                 )}
               </Form.Group>
-              <Form.Group  className="mb-3">
+              <Form.Group className="mb-3">
                 <Form.Label>Date</Form.Label>
                 <Form.Control
                   type="date"
@@ -508,7 +343,7 @@ const availableQuantity =
               Close
             </Button>
             <Button variant="success" onClick={handleSaveProduct}>
-         Apply
+              Apply
             </Button>
           </Modal.Footer>
         </Modal>
@@ -541,29 +376,25 @@ const availableQuantity =
           <Button variant="danger" onClick={() => handleDelete(appliedProduct._id)}  disabled={!isEditable(appliedProduct.date)} className="mx-2">Delete</Button>
         </td> */}
                 <td className="text-center">
-                  
-                    <>
-                      <Button
-                        variant="warning"
-                        onClick={() => handleEdit(appliedProduct)}
-                        className="btn-sm"
-                        disabled={checkDisableState(appliedProduct.appliedAt)}
-                       
-                      >
-                        <i className="bi bi-pen text-white"></i>
-                      </Button>
+                  <>
+                    <Button
+                      variant="warning"
+                      onClick={() => handleEdit(appliedProduct)}
+                      className="btn-sm"
+                      disabled={checkDisableState(appliedProduct.appliedAt)}
+                    >
+                      <i className="bi bi-pen text-white"></i>
+                    </Button>
 
-                      <Button
-                        variant="danger"
-                        onClick={() => handleDelete(appliedProduct._id)}
-                        className="mx-2 btn-sm"
-                        disabled={checkDisableState(appliedProduct.appliedAt)}
-                      
-                      >
-                        <i className="bi bi-trash"></i>
-                      </Button>
-                    </>
-                
+                    <Button
+                      variant="danger"
+                      onClick={() => handleDelete(appliedProduct._id)}
+                      className="mx-2 btn-sm"
+                      disabled={checkDisableState(appliedProduct.appliedAt)}
+                    >
+                      <i className="bi bi-trash"></i>
+                    </Button>
+                  </>
                 </td>
               </tr>
             ))}
