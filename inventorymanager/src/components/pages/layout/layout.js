@@ -88,7 +88,12 @@ const Layout = () => {
   };
   const ProtectedRoute = ({ element }) => {
     const token = localStorage.getItem("token");
-    return token ? element : <Navigate to="/" />;
+  
+    if (!token) {
+      return <Navigate to="/" replace />;
+    }
+  
+    return element;
   };
   return (
     <div
@@ -121,23 +126,26 @@ const Layout = () => {
               <Route path="/" element={<Navigate to="/layout/dashboard" />} />
               <Route
                 path="/dashboard"
+                element={<ProtectedRoute
                 element={
                   <Dashboard
                     products={products}
                     onDelete={handleDeleteProduct}
                     onEdit={handleEditProduct}
                   />
-                }
+                } />}
               />
               <Route
                 path="/orders"
-                element={<Order filterText={filterText} />}
+                element={<ProtectedRoute
+                element={<Order filterText={filterText} />}  />}
               />
               <Route
                 path="/products"
-                element={<Products filterText={filterText} />}
+                element={<ProtectedRoute 
+                element={<Products filterText={filterText} />} />}
               />
-              <Route path="/changepassword" element={<ChangePassword />} />
+              <Route path="/changepassword"   element={<ProtectedRoute element={<ChangePassword />} />} />
             </Routes>
           </div>
         </div>

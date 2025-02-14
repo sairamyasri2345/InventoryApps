@@ -34,6 +34,15 @@ const Layout = () => {
   const toggleSidebar = () => {
     setSidebarCollapsed((prevCollapsed) => !prevCollapsed);
   };
+const ProtectedRoute = ({ element }) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return <Navigate to="/" replace />;
+  }
+
+  return element;
+};
   useEffect(() => {
     const fetchUserData = () => {
       const token = localStorage.getItem("token");

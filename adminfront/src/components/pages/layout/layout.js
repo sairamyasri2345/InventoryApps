@@ -114,10 +114,15 @@ const Layout = () => {
       )
     );
   };
-  const ProtectedRoute = ({ element }) => {
-    const token = localStorage.getItem("token");
-    return token ? element : <Navigate to="/" />;
-  };
+const ProtectedRoute = ({ element }) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return <Navigate to="/" replace />;
+  }
+
+  return element;
+};
   return (
     <div
       ref={appContainerRef}
@@ -187,6 +192,7 @@ const Layout = () => {
                   />
                 }
               />
+               
             </Routes>
           </div>
         </div>
