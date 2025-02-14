@@ -35,7 +35,7 @@ import Products from "../product/product";
 import EmployeeList from "../empList/empList";
 import "./layout.css";
 import ChangePassword from "../../changePassword/changepassword";
-
+import ProtectedRoute from "../protectedRoute";
 const Layout = () => {
   const [products, setProducts] = useState([]);
   const [userData, setUserData] = useState(null);
@@ -114,15 +114,7 @@ const Layout = () => {
       )
     );
   };
-const ProtectedRoute = ({ element }) => {
-  const token = localStorage.getItem("token");
 
-  if (!token) {
-    return <Navigate to="/" replace />;
-  }
-
-  return element;
-};
   return (
     <div
       ref={appContainerRef}

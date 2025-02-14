@@ -6,15 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import EmpSignUp from "./components/register/register";
 import 'bootstrap-icons/font/bootstrap-icons.css'; 
 import NotFound from "./components/pages/notfound/notfound";
-const ProtectedRoute = ({ element }) => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    return <Navigate to="/" replace />;
-  }
-
-  return element;
-};
+import ProtectedRoute from "../protectedRoute";
 
 const App = () => {
   return (
