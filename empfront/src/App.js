@@ -7,6 +7,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
+const ProtectedRoute = ({ element }) => {
+  const token = localStorage.getItem("token");
+
+  return token ? element : <Navigate to="/" />;
+};
+
+
 const App = () => {
 
 
@@ -14,7 +21,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/layout/*" element={<Layout />} />
+      c
       </Routes>
     </Router>
   );

@@ -25,8 +25,6 @@
 
 // export default Layout;
 
-
-
 import React, { useState, useEffect, useRef } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Sidebar from "../sidebar/sidebar";
@@ -116,7 +114,10 @@ const Layout = () => {
       )
     );
   };
-
+  const ProtectedRoute = ({ element }) => {
+    const token = localStorage.getItem("token");
+    return token ? element : <Navigate to="/" />;
+  };
   return (
     <div
       ref={appContainerRef}
@@ -149,23 +150,43 @@ const Layout = () => {
               <Route
                 path="/dashboard"
                 element={
-                  <Dashboard
-                    products={products}
-                    onDelete={handleDeleteProduct}
-                    onEdit={handleEditProduct}
+                  <ProtectedRoute
+                    element={
+                      <Dashboard
+                        products={products}
+                        onDelete={handleDeleteProduct}
+                        onEdit={handleEditProduct}
+                      />
+                    }
                   />
                 }
               />
               <Route
                 path="/orders"
-                element={<Order filterText={filterText} />}
+                element={
+                  <ProtectedRoute element={<Order filterText={filterText} />} />
+                }
               />
               <Route
                 path="/products"
-                element={<Products filterText={filterText} />}
+                element={
+                  <ProtectedRoute
+                    element={<Products filterText={filterText} />}
+                  />
+                }
               />
-              <Route path="/changepassword" element={<ChangePassword />} />
-              <Route path="/empList" element={<EmployeeList filterText={filterText} />} />
+              <Route
+                path="/changepassword"
+                element={<ProtectedRoute element={<ChangePassword />} />}
+              />
+              <Route
+                path="/empList"
+                element={
+                  <ProtectedRoute
+                    element={<EmployeeList filterText={filterText} />}
+                  />
+                }
+              />
             </Routes>
           </div>
         </div>

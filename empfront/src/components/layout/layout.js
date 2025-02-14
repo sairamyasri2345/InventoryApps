@@ -8,8 +8,6 @@ import "./layout.css";
 // import axios from 'axios';
 import ChangePassword from "../changePassword/chnagepassword";
 
-
-
 const Layout = () => {
   const [products, setProducts] = useState([]);
   const [userData, setUserData] = useState(null);
@@ -41,7 +39,7 @@ const Layout = () => {
       const token = localStorage.getItem("token");
       const employeeID = localStorage.getItem("employeeID");
       const employeeName = localStorage.getItem("employeeName");
-      console.log(employeeName,"emp")
+      console.log(employeeName, "emp");
 
       if (token && employeeID && employeeName) {
         setUserData({ employeeID, name: employeeName });
@@ -55,11 +53,9 @@ const Layout = () => {
     fetchUserData();
   }, []);
 
-
-
   const handleFilterChange = (text) => {
     setFilterText(text);
-  }
+  };
 
   const handleAddProduct = (newProduct) => {
     setProducts([...products, newProduct]);
@@ -80,8 +76,6 @@ const Layout = () => {
   const handleViewProduct = (productId) => {
     console.log("Viewing product:", productId);
   };
-
-  
 
   return (
     <div
@@ -115,21 +109,30 @@ const Layout = () => {
               <Route
                 path="/dashboard"
                 element={
-                  <Dashboard
-                    onDelete={handleDeleteProduct}
-                    onEdit={handleEditProduct}
-                    onView={handleViewProduct}
-                    filterText={filterText}
-                    userData={userData}
+                  <ProtectedRoute
+                    element={
+                      <Dashboard
+                        onDelete={handleDeleteProduct}
+                        onEdit={handleEditProduct}
+                        onView={handleViewProduct}
+                        filterText={filterText}
+                        userData={userData}
+                      />
+                    }
                   />
                 }
               />
               <Route
                 path="/orders"
-                element={<Order filterText={filterText} />}
+                element={
+                  <ProtectedRoute element={<Order filterText={filterText} />} />
+                }
               />
 
-              <Route path="/changepassword" element={<ChangePassword />} />
+              <Route
+                path="/changepassword"
+                element={<ProtectedRoute element={<ChangePassword />} />}
+              />
             </Routes>
           </div>
         </div>
