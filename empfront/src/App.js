@@ -5,7 +5,7 @@ import Login from "./components/login/login";
 import Layout from "./components/layout/layout";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
+import NotFound from "./components/pages/notfound/notfound";
 
 const ProtectedRoute = ({ element }) => {
   const token = localStorage.getItem("token");
@@ -24,6 +24,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="*" element={<NotFound/>}/>
         <Route path="/layout/*" element={<ProtectedRoute element={<Layout />} />} />
       </Routes>
     </Router>
