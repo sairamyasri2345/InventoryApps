@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import EmpSignUp from "./components/register/register";
 import 'bootstrap-icons/font/bootstrap-icons.css'; 
 import NotFound from "./components/pages/notfound/notfound";
-import ProtectedRoute from "../protectedRoute";
+import ProtectedRoute from "./components/pages/protectedRoute";
 
 const App = () => {
   return (

@@ -5,6 +5,7 @@ import Dashboard from "../appliedproduct/appliedPro";
 import Order from "../order/order";
 import EmpNavbar from "../navbar/navbar";
 import "./layout.css";
+import ProtectedRoute from "../../components/pages/protectedRoute";
 // import axios from 'axios';
 import ChangePassword from "../changePassword/chnagepassword";
 
@@ -34,15 +35,7 @@ const Layout = () => {
   const toggleSidebar = () => {
     setSidebarCollapsed((prevCollapsed) => !prevCollapsed);
   };
-const ProtectedRoute = ({ element }) => {
-  const token = localStorage.getItem("token");
 
-  if (!token) {
-    return <Navigate to="/" replace />;
-  }
-
-  return element;
-};
   useEffect(() => {
     const fetchUserData = () => {
       const token = localStorage.getItem("token");
