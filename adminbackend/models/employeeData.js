@@ -8,7 +8,7 @@ const employeeSchema = new mongoose.Schema({
     password: { type: String, required: true },
     designation: { type: String, required: true },
     // phonenumber:{type:String, require:true},
-    // department:{type:String, require:true}
+    department:{type:String, require:true}
 
 });
 

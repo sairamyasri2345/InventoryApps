@@ -33,7 +33,7 @@
       email: "",
       password: "",
       // phonenumber: "",
-      // department: "",
+      department: "",
       designation: "",
     });
     const [totalRecords, setTotalRecords] = useState(0);
@@ -45,7 +45,7 @@
       email: false,
       password: false,
       // phonenumber: false,
-      // department: false,
+       department: false,
       designation: false,
     });
 
@@ -58,7 +58,7 @@
       email: "",
       password: "",
       // phonenumber: "",
-      // department: "",
+      department: "",
       designation: "",
     });
 
@@ -84,7 +84,7 @@
         employee.name.toLowerCase().includes(filterText.toLowerCase()) ||
         employee.employeeID.toLowerCase().includes(filterText.toLowerCase()) ||
         employee.email.toLowerCase().includes(filterText.toLowerCase()) ||
-        employee.designation.toLowerCase().includes(filterText.toLowerCase())
+        employee.designation.toLowerCase().includes(filterText.toLowerCase()) || employee.department.toLowerCase().includes(filterText.toLowerCase()) 
       );
     })
     const handleBlur = (e) => {
@@ -155,7 +155,10 @@
         errors.designation = "Designation is required";
         isValid = false;
       }
-
+      if (!employeeData.department) {
+        errors.designation = "Designation is required";
+        isValid = false;
+      }
       setValidationErrors(errors);
       return isValid;
     };
@@ -164,7 +167,7 @@
     const fetchEmployees = async (page = 1, limit = pageSize) => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://13.232.162.43/api/employees", {
+        const response = await axios.get("http://localhost:3003/api/employees", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setEmployees(response.data);
@@ -185,7 +188,7 @@
     //   if (isValid) {
     //     try {
     //       const response = await axios.post(
-    //         "http://13.232.162.43/api/employees/add-employee",
+    //         "http://localhost:3003/api/employees/add-employee",
     //         employeeData
     //       );
     //       if (response.status === 201) {
@@ -225,7 +228,7 @@
           if (editMode) {
             // Update existing employee
             const response = await axios.put(
-              `http://13.232.162.43/api/employees/${currentEmployee._id}`,
+              `http://localhost:3003/api/employees/${currentEmployee._id}`,
               employeeData
             );
             if (response.status === 200) {
@@ -237,7 +240,7 @@
           } else {
             // Add new employee
             const response = await axios.post(
-              "http://13.232.162.43/api/employees/add-employee",
+              "http://localhost:3003/api/employees/add-employee",
               employeeData
             );
             if (response.status === 201) {
@@ -251,7 +254,7 @@
             email: "",
             password: "",
             // phonenumber: "",
-            // department: "",
+            department: "",
             designation: "",
           });
         } catch (error) {
@@ -265,7 +268,7 @@
           email: true,
           password: true,
           // phonenumber: true,
-          // department: true,
+          department: true,
           designation: true,
         });
       }
@@ -274,7 +277,7 @@
     const handleDelete = async (id) => {
       console.log("Deleting employee with ID:", id);
       try {
-        await axios.delete(`http://13.232.162.43/api/employees/${id}`);
+        await axios.delete(`http://localhost:3003/api/employees/${id}`);
         fetchEmployees(); // Refresh employee list after deletion
       } catch (error) {
         console.error("Error deleting employee:", error);
@@ -541,6 +544,24 @@
                             </Form.Text>
                           )}
                       </Form.Group>
+                      <Form.Group className="mb-2">
+                        <Form.Label>Department</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="department"
+                          value={employeeData.department}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          placeholder="Enter department"
+                        />
+                        {(touchedFields.department ||
+                          !employeeData.department) &&
+                          validationErrors.department && (
+                            <Form.Text className="text-danger">
+                              {validationErrors.department}
+                            </Form.Text>
+                          )}
+                      </Form.Group>
                     </Form>
                   </Modal.Body>
                   <Modal.Footer>
@@ -560,8 +581,8 @@
                         <th className="text-center">Employee ID</th>
                         <th className="text-center">Email</th>
                         <th className="text-center">Password</th>
-                        {/* <th className="text-center">Phone Number</th>
-                        <th className="text-center">Department</th> */}
+                         {/* <th className="text-center">Phone Number</th> */}
+                         <th className="text-center">Department</th>
                         <th className="text-center">Designation</th>
                         <th className="text-center">Action</th>
                       </tr>
@@ -608,8 +629,8 @@
                               </span>
                             </OverlayTrigger>
                           </td>
-                          {/* <td className="text-center">{employee.phonenumber}</td>
-                          <td className="text-center">{employee.department}</td> */}
+                          {/* <td className="text-center">{employee.phonenumber}</td> */}
+                          <td className="text-center">{employee.department}</td> 
                           <td className="text-center">
                           <OverlayTrigger
                               placement="top"

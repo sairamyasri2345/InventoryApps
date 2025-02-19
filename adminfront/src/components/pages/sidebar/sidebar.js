@@ -60,7 +60,7 @@ const Sidebar = ({ darkMode, sidebarCollapsed }) => {
                   to="/layout/dashboard"
                 >
                   <i className="bi bi-microsoft icons"></i>
-                  <p className=" px-3 pt-1 list-item-text d-lg-block d-none">
+                  <p className=" px-3  list-item-text d-lg-block d-none">
                     Dashboard
                   </p>
                 </Link>
@@ -71,7 +71,7 @@ const Sidebar = ({ darkMode, sidebarCollapsed }) => {
                   to="/layout/empList"
                 >
                 <i class="bi bi-people-fill icons"></i>
-                  <p className="px-3 pt-1 list-item-text d-lg-block d-none">
+                  <p className="px-3  list-item-text d-lg-block d-none">
                     EmployeeList
                   </p>
                 </Link>
@@ -83,7 +83,7 @@ const Sidebar = ({ darkMode, sidebarCollapsed }) => {
                   to="/layout/orders"
                 >
                   <i className="bi bi-cart3 icons"></i>
-                  <p className="pt-1 px-3 list-item-text d-lg-block d-none">
+                  <p className=" px-3 list-item-text d-lg-block d-none">
                     Orders
                   </p>
                 </Link>
@@ -94,23 +94,45 @@ const Sidebar = ({ darkMode, sidebarCollapsed }) => {
                   to="/layout/products"
                 >
                   <i className="bi bi-bag-check  icons"></i>
-                  <p className="px-3 pt-1 list-item-text d-lg-block d-none">
+                  <p className="px-3  list-item-text d-lg-block d-none">
                     Products
                   </p>
                 </Link>
               </li>
-
+              <li className="px-4 list-item mb-2">
+                <Link
+                  className="navlink text-white text-decoration-none d-flex"
+                  to="/layout/warehouse"
+                >
+                  <i className="bi bi-key  icons "></i>
+                  <p className="px-3  list-item-text d-lg-block d-none">
+                   WareHouse
+                  </p>
+                </Link>
+              </li>
+              <li className="px-4 list-item mb-2">
+                <Link
+                  className="navlink text-white text-decoration-none d-flex"
+                  to="/layout/projects"
+                >
+                  <i className="bi bi-key  icons "></i>
+                  <p className="px-3 list-item-text d-lg-block d-none">
+                  Projects
+                  </p>
+                </Link>
+              </li>
               <li className="px-4 list-item mb-2">
                 <Link
                   className="navlink text-white text-decoration-none d-flex"
                   to="/layout/changepassword"
                 >
                   <i className="bi bi-key  icons "></i>
-                  <p className="px-3 pt-1 list-item-text d-lg-block d-none">
+                  <p className="px-3  list-item-text d-lg-block d-none">
                     Change Password
                   </p>
                 </Link>
               </li>
+          
             </ul>
           </div>
         </div>

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button, Table, Form } from "react-bootstrap";
 import axios from "axios";
 
-const ProductManagement = ({ darkMode,  filterText}) => {
+const ProjectManagement = ({ darkMode,  filterText}) => {
   const [show, setShow] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 8;
@@ -59,13 +59,13 @@ const ProductManagement = ({ darkMode,  filterText}) => {
      console.log(appliedProducts,"prod")
       
 
-      const counts = appliedProducts.reduce((acc, item) => {
-        if (item.status.toLowerCase() === "approved") {
-          acc[item.productName] =
-            (acc[item.productName] || 0) + item.quantity;
-        }
-        return acc;
-      }, {});
+     const counts = appliedProducts.reduce((acc, item) => {
+      if (item.status && typeof item.status === "string" && item.status.toLowerCase() === "approved") {
+        acc[item.productName] = (acc[item.productName] || 0) + item.quantity;
+      }
+      return acc;
+    }, {});
+    
       console.log(counts,"prod")
       setApprovedCounts(counts);
 
@@ -127,7 +127,7 @@ const ProductManagement = ({ darkMode,  filterText}) => {
     }
   };
   const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(filterText.toLowerCase())
+    product.name?.toLowerCase().includes(filterText.toLowerCase())
   );
 
  // Pagination logic
@@ -139,6 +139,16 @@ const ProductManagement = ({ darkMode,  filterText}) => {
  const handlePageChange = (pageNumber) => {
    setCurrentPage(pageNumber);
  };
+ const handleProductSelection = (e) => {
+  const selectedProduct = products.find(
+    (product) => product.name === e.target.value
+  );
+  setProductData({
+    ...productData,
+    name: selectedProduct.name,
+    image: selectedProduct.image,
+  });
+};
 
  // Generate page range to show around current page
  const generatePageRange = () => {
@@ -163,11 +173,11 @@ const ProductManagement = ({ darkMode,  filterText}) => {
   return (
     <div className={`container-fluid ${darkMode ? "dark-mode" : ""}`}>
       <div className="card p-3 m-3">
-      {/* <div className="d-flex justify-content-end">
+      <div className="d-flex justify-content-end">
         <button onClick={() => { setEditMode(false); handleShow(); }} className="btn btn-success mb-4">
           <i className="bi bi-plus-lg px-1"></i> Add Product
         </button>
-      </div> */}
+      </div>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -175,17 +185,29 @@ const ProductManagement = ({ darkMode,  filterText}) => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group>
-              <Form.Label>Product Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={productData.name}
-                onChange={handleChange}
-                placeholder="Enter product name"
-              />
-              {validationErrors.name && <Form.Text className="text-danger">{validationErrors.name}</Form.Text>}
-            </Form.Group>
+          <Form.Group>
+  <Form.Label>Select Product</Form.Label>
+  <Form.Select
+    name="selectedProduct"
+    value={productData.name}
+    onChange={handleChange}
+  >
+    <option value="">Select a Product</option>
+    {products.map((product) => (
+      <option key={product._id} value={product.name}>
+        {product.name}
+      </option>
+    ))}
+  </Form.Select>
+  {productData.image && (
+    <img
+      src={`http://localhost:3003/${productData.image}`}
+      alt={productData.name}
+      style={{ width: "50px", height: "50px", objectFit: "cover" }}
+    />
+  )}
+</Form.Group>
+
             <Form.Group>
               <Form.Label>Quantity</Form.Label>
               <Form.Control
@@ -232,7 +254,7 @@ const ProductManagement = ({ darkMode,  filterText}) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>Close</Button>
-          <Button variant="success" onClick={handleSave}>{editMode ? "Update" : "Save"}</Button>
+          <Button variant="success" onClick={handleSave}>{editMode ? "Update Productpp" : "Add Product"}</Button>
         </Modal.Footer>
       </Modal>
 
@@ -245,7 +267,7 @@ const ProductManagement = ({ darkMode,  filterText}) => {
             <th className="text-center">Date</th>
             <th className="text-center">Description</th>
             <th className="text-center">Availability</th>
-            {/* <th className="text-center">Actions</th> */}
+            <th className="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -270,10 +292,10 @@ const ProductManagement = ({ darkMode,  filterText}) => {
                   <span className="badge bg-danger">Not Available</span>
                 )}
               </td>
-              {/* <td className="text-center">
+              <td className="text-center">
                 <Button variant="warning" onClick={() => handleEdit(product)} className="btn-sm "><i className="bi bi-pen text-white"></i></Button>{" "}
                 <Button variant="danger" onClick={() => handleDelete(product._id)} className="btn-sm"><i className="bi bi-trash"></i></Button>
-              </td> */}
+              </td>
             </tr>
               )
             })}
@@ -323,5 +345,6 @@ const ProductManagement = ({ darkMode,  filterText}) => {
   );
 };
 
-export default ProductManagement;
+
+export default ProjectManagement;
 

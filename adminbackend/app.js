@@ -1,13 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config()
 const employeeRoutes = require("./routes/emp");
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const employeeAuthRoutes = require("./routes/empAuthRoutes");
 const appliedProductRoutes = require("./routes/appliedRoute");
-const inventtoryRoue=require("./routes/inventoryroute")
+const inventtoryRoue=require("./routes/inventoryroute");
+const warehouseRoutes = require("./routes/warehouseroute");
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -29,7 +31,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/inventoryManager", inventtoryRoue);
 app.use("/api/employees", employeeAuthRoutes);
 app.use('/api/appliedProducts', appliedProductRoutes);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
-
+app.use("/api/warehouse", warehouseRoutes )
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.listen(process.env.PORT, () => console.log(`Admin backend running on port 3003`));

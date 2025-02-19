@@ -16,7 +16,7 @@ const AdminProducts = ({ filterText, darkMode }) => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "http://13.232.162.43/api/appliedProducts",
+          "http://localhost:3003/api/appliedProducts",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -33,7 +33,7 @@ const AdminProducts = ({ filterText, darkMode }) => {
   const updateStatus = async (id, newStatus) => {
     try {
       await axios.put(
-        `http://13.232.162.43/api/appliedProducts/update-status/${id}`,
+        `http://localhost:3003/api/appliedProducts/update-status/${id}`,
         { status: newStatus }
       );
       setAppliedProducts(

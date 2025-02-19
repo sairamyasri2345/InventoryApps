@@ -43,7 +43,7 @@ const ProductManagement = ({ darkMode,  filterText}) => {
   const fetchProducts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://13.232.162.43/api/products/products", {
+      const response = await axios.get("http://localhost:3003/api/products/products", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProducts(response.data);
@@ -54,18 +54,18 @@ const ProductManagement = ({ darkMode,  filterText}) => {
 
   const fetchAppliedProducts = async () => {
     try {
-      const response = await axios.get("http://13.232.162.43/api/appliedProducts");
+      const response = await axios.get("http://localhost:3003/api/appliedProducts");
       const appliedProducts = await response.data;
      console.log(appliedProducts,"prod")
       
 
-      const counts = appliedProducts.reduce((acc, item) => {
-        if (item.status.toLowerCase() === "approved") {
-          acc[item.productName] =
-            (acc[item.productName] || 0) + item.quantity;
-        }
-        return acc;
-      }, {});
+     const counts = appliedProducts.reduce((acc, item) => {
+      if (item.status && typeof item.status === "string" && item.status.toLowerCase() === "approved") {
+        acc[item.productName] = (acc[item.productName] || 0) + item.quantity;
+      }
+      return acc;
+    }, {});
+    
       console.log(counts,"prod")
       setApprovedCounts(counts);
 
@@ -94,9 +94,9 @@ const ProductManagement = ({ darkMode,  filterText}) => {
 
     try {
       if (editMode) {
-        await axios.put(`http://13.232.162.43/api/products/${currentProductId}`, productData);
+        await axios.put(`http://localhost:3003/api/products/${currentProductId}`, productData);
       } else {
-        await axios.post("http://13.232.162.43/api/products/add-product", productData);
+        await axios.post("http://localhost:3003/api/products/add-product", productData);
       }
       fetchProducts();
       handleClose();
@@ -120,14 +120,14 @@ const ProductManagement = ({ darkMode,  filterText}) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://13.232.162.43/api/products/${id}`);
+      await axios.delete(`http://localhost:3003/api/products/${id}`);
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
     }
   };
   const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(filterText.toLowerCase())
+    product.name?.toLowerCase().includes(filterText.toLowerCase())
   );
 
  // Pagination logic
@@ -139,6 +139,16 @@ const ProductManagement = ({ darkMode,  filterText}) => {
  const handlePageChange = (pageNumber) => {
    setCurrentPage(pageNumber);
  };
+ const handleProductSelection = (e) => {
+  const selectedProduct = products.find(
+    (product) => product.name === e.target.value
+  );
+  setProductData({
+    ...productData,
+    name: selectedProduct.name,
+    image: selectedProduct.image,
+  });
+};
 
  // Generate page range to show around current page
  const generatePageRange = () => {
@@ -175,17 +185,29 @@ const ProductManagement = ({ darkMode,  filterText}) => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group>
-              <Form.Label>Product Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={productData.name}
-                onChange={handleChange}
-                placeholder="Enter product name"
-              />
-              {validationErrors.name && <Form.Text className="text-danger">{validationErrors.name}</Form.Text>}
-            </Form.Group>
+          <Form.Group>
+  <Form.Label>Select Product</Form.Label>
+  <Form.Select
+    name="selectedProduct"
+    value={productData.name}
+    onChange={handleChange}
+  >
+    <option value="">Select a Product</option>
+    {products.map((product) => (
+      <option key={product._id} value={product.name}>
+        {product.name}
+      </option>
+    ))}
+  </Form.Select>
+  {productData.image && (
+    <img
+      src={`http://localhost:3003/${productData.image}`}
+      alt={productData.name}
+      style={{ width: "50px", height: "50px", objectFit: "cover" }}
+    />
+  )}
+</Form.Group>
+
             <Form.Group>
               <Form.Label>Quantity</Form.Label>
               <Form.Control
