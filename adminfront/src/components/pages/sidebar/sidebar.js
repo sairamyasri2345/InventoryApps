@@ -104,7 +104,7 @@ const Sidebar = ({ darkMode, sidebarCollapsed }) => {
                   className="navlink text-white text-decoration-none d-flex"
                   to="/layout/warehouse"
                 >
-                  <i className="bi bi-key  icons "></i>
+                  <i className="bi bi-truck  icons "></i>
                   <p className="px-3  list-item-text d-lg-block d-none">
                    WareHouse
                   </p>
@@ -115,7 +115,7 @@ const Sidebar = ({ darkMode, sidebarCollapsed }) => {
                   className="navlink text-white text-decoration-none d-flex"
                   to="/layout/projects"
                 >
-                  <i className="bi bi-key  icons "></i>
+                  <i className="bi  bi-box-seam  icons "></i>
                   <p className="px-3 list-item-text d-lg-block d-none">
                   Projects
                   </p>

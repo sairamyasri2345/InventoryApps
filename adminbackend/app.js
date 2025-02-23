@@ -10,6 +10,8 @@ const employeeAuthRoutes = require("./routes/empAuthRoutes");
 const appliedProductRoutes = require("./routes/appliedRoute");
 const inventtoryRoue=require("./routes/inventoryroute");
 const warehouseRoutes = require("./routes/warehouseroute");
+const projectRoutes = require("./routes/project");
+const departmentRoutes = require("./routes/dept");
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -31,9 +33,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/inventoryManager", inventtoryRoue);
 app.use("/api/employees", employeeAuthRoutes);
 app.use('/api/appliedProducts', appliedProductRoutes);
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-
+app.use("/api/projects", projectRoutes);
+app.use("/api/depts",departmentRoutes)
 app.use("/api/warehouse", warehouseRoutes )
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.listen(process.env.PORT, () => console.log(`Admin backend running on port 3003`));
