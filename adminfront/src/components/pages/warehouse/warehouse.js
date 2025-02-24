@@ -37,7 +37,7 @@ const Warehouse = ({ darkMode, filterText }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:3003/api/warehouse/products",
+        "http://13.232.162.43/api/warehouse/products",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -50,7 +50,7 @@ const Warehouse = ({ darkMode, filterText }) => {
   const fetchWarehouseProjects = async () => {
     try {
       const warehouseRes = await axios.get(
-        "http://localhost:3003/api/projects/projects"
+        "http://13.232.162.43/api/projects/projects"
       );
       console.log("Warehouse Projects:", warehouseRes.data);
       setWarehouseProjects(warehouseRes.data);
@@ -61,7 +61,7 @@ const Warehouse = ({ darkMode, filterText }) => {
   const fetchAppliedProducts = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3003/api/appliedProducts"
+        "http://13.232.162.43/api/appliedProducts"
       );
       const appliedProducts = await response.data;
       console.log(appliedProducts, "prod");
@@ -106,12 +106,12 @@ const Warehouse = ({ darkMode, filterText }) => {
     try {
       if (editMode) {
         await axios.put(
-          `http://localhost:3003/api/warehouse/${currentProductId}`,
+          `http://13.232.162.43/api/warehouse/${currentProductId}`,
           productData
         );
       } else {
         await axios.post(
-          "http://localhost:3003/api/warehouse/add-product",
+          "http://13.232.162.43/api/warehouse/add-product",
           productData
         );
       }
@@ -139,7 +139,7 @@ const Warehouse = ({ darkMode, filterText }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3003/api/warehouse/${id}`);
+      await axios.delete(`http://13.232.162.43/api/warehouse/${id}`);
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);

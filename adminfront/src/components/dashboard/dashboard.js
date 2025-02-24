@@ -8,7 +8,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:3003/api/products/products');
+        const response = await fetch('http://13.232.162.43/api/products/products');
         const result = await response.json();
         if (Array.isArray(result)) {
           setProducts(result);
@@ -22,7 +22,7 @@ const Dashboard = () => {
 
     const fetchApprovedCounts = async () => {
       try {
-        const response = await axios.get("http://localhost:3003/api/appliedProducts");
+        const response = await axios.get("http://13.232.162.43/api/appliedProducts");
         const appliedProducts = await response.data;
        console.log(appliedProducts,"prod")
         

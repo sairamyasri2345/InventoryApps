@@ -75,7 +75,7 @@ const Layout = () => {
           return;
         }
 
-        const response = await fetch("http://localhost:3003/api/auth/me", {
+        const response = await fetch("http://13.232.162.43/api/auth/me", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

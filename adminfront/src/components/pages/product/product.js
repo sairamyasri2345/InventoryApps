@@ -40,7 +40,7 @@ const ProductManagement = ({ darkMode, filterText }) => {
   const fetchProducts = async () => {
     try {
       const productRes = await axios.get(
-        "http://localhost:3003/api/products/products"
+        "http://13.232.162.43/api/products/products"
       );
 
       const allProducts = [...productRes.data];
@@ -53,7 +53,7 @@ const ProductManagement = ({ darkMode, filterText }) => {
   const fetchWarehouseProducts = async () => {
     try {
       const warehouseRes = await axios.get(
-        "http://localhost:3003/api/warehouse/products"
+        "http://13.232.162.43/api/warehouse/products"
       );
       console.log("Warehouse Products:", warehouseRes.data);
       setWarehouseProducts(warehouseRes.data);
@@ -65,7 +65,7 @@ const ProductManagement = ({ darkMode, filterText }) => {
   const fetchAppliedProducts = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3003/api/appliedProducts"
+        "http://13.232.162.43/api/appliedProducts"
       );
       const appliedProducts = await response.data;
       console.log(appliedProducts, "prod");
@@ -110,12 +110,12 @@ const ProductManagement = ({ darkMode, filterText }) => {
     try {
       if (editMode) {
         await axios.put(
-          `http://localhost:3003/api/products/${currentProductId}`,
+          `http://13.232.162.43/api/products/${currentProductId}`,
           productData
         );
       } else {
         await axios.post(
-          "http://localhost:3003/api/products/add-product",
+          "http://13.232.162.43/api/products/add-product",
           productData
         );
       }
@@ -142,7 +142,7 @@ const ProductManagement = ({ darkMode, filterText }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3003/api/products/${id}`);
+      await axios.delete(`http://13.232.162.43/api/products/${id}`);
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
