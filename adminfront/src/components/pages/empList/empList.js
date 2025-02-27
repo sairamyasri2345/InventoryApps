@@ -50,16 +50,15 @@ const EmployeeManagement = ({ darkMode, filterText }) => {
     designation: false,
   });
   const handleDeptSelection = (e) => {
-    const selectedProduct = deptsData.find(
-      (dept) => dept.name === e.target.value
-    );
-
-    if (selectedProduct) {
-      setEmployeeData({
-        department: selectedProduct.name,
-      });
+    const selectedDept = deptsData.find(dept => dept.name === e.target.value);
+    if (selectedDept) {
+      setEmployeeData(prevData => ({
+        ...prevData,
+        department: selectedDept.name,
+      }));
     }
   };
+  
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -164,7 +163,7 @@ const EmployeeManagement = ({ darkMode, filterText }) => {
       isValid = false;
     }
     if (!employeeData.department) {
-      errors.designation = "Designation is required";
+      errors.designation = "Department is required";
       isValid = false;
     }
     setValidationErrors(errors);
@@ -192,11 +191,12 @@ const EmployeeManagement = ({ darkMode, filterText }) => {
 
  
   const handleSave = async () => {
+
     const isValid = validateForm();
     if (isValid) {
       try {
         if (editMode) {
-          // Update existing employee
+       
           const response = await axios.put(
             `http://localhost:3003/api/employees/${currentEmployee._id}`,
             employeeData
@@ -208,7 +208,7 @@ const EmployeeManagement = ({ darkMode, filterText }) => {
             setEmployees(updatedEmployees);
           }
         } else {
-          // Add new employee
+         
           const response = await axios.post(
             "http://localhost:3003/api/employees/add-employee",
             employeeData
@@ -217,7 +217,11 @@ const EmployeeManagement = ({ darkMode, filterText }) => {
             setEmployees([...employees, response.data]);
           }
         }
+        
+
         handleClose();
+        
+
         setEmployeeData({
           name: "",
           employeeID: "",
