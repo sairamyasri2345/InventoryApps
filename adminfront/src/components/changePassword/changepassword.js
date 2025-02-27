@@ -56,7 +56,7 @@ const ChangePassword = () => {
                     required
                   />
                 </div>
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label htmlFor="newPassword">New Password</label>
                   <input
                     type="password"
@@ -69,7 +69,7 @@ const ChangePassword = () => {
                   <small>
                     Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number, and a special character.
                   </small>
-                </div>
+                </div> */}
                 <button type="submit" className="btn btn-success mt-3">
                   Reset Password
                 </button>
