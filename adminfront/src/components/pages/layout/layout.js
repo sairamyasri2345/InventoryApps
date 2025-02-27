@@ -38,6 +38,7 @@ import ChangePassword from "../../changePassword/changepassword";
 import ProtectedRoute from "../protectedRoute";
 import Warehouse from "../warehouse/warehouse";
 import ProjectManagement from "../projects/project";
+import SendProducts from "../sendProducts/sendProduct";
 const Layout = () => {
   const [products, setProducts] = useState([]);
   const [userData, setUserData] = useState(null);
@@ -75,7 +76,7 @@ const Layout = () => {
           return;
         }
 
-        const response = await fetch("http://13.232.162.43/api/auth/me", {
+        const response = await fetch("http://localhost:3003/api/auth/me", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -200,6 +201,16 @@ const Layout = () => {
                   <ProtectedRoute
                     element={<Warehouse filterText={filterText} />}
                   />
+                  
+                }
+              />
+                 <Route
+                path="/sendProducts"
+                element={
+                  <ProtectedRoute
+                    element={<SendProducts filterText={filterText} />}
+                  />
+                  
                 }
               />
             </Routes>

@@ -94,7 +94,7 @@ const EmpSignUp = () => {
       if (!validateForm()) return;
 
       try {
-        const response = await axios.post("http://13.232.162.43/api/inventoryManager/register", {
+        const response = await axios.post("http://localhost:3003/api/inventoryManager/register", {
           username: uname,
           email,
           password,

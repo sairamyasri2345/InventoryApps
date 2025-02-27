@@ -1,17 +1,17 @@
-const Product = require("../models/product");
+const express = require("express");
+const router = express.Router();
+const SendProduct = require("../models/sendproduct");
 
-// Add product with image handling
-const addProduct = async (req, res) => {
+// Endpoint to store sent products
+router.post('/sendProducts', async (req, res) => {
   try {
-    const { name, quantity, date, description } = req.body;
+    const { name, quantity, sendProduct } = req.body;
    
 
-    const newProduct = new Product({
+    const newProduct = new SendProduct ({
       name,
       quantity,
-      date,
-      description,
-   
+   sendProduct
     });
 
     await newProduct.save();
@@ -19,40 +19,37 @@ const addProduct = async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: "Error adding product", error });
   }
-};
+});
 
 // Get products
-const getProducts = async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await SendProduct .find();
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: "Error fetching products", error });
   }
-};
-
-// Update product
-const updateProduct = async (req, res) => {
+});
+router.put('/sendProducts/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
+    const updatedProduct = await SendProduct.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     res.json(updatedProduct);
   } catch (error) {
     res.status(400).json({ message: "Error updating product", error });
   }
-};
+});
 
 // Delete product
-const deleteProduct = async (req, res) => {
+router.delete('/sendProducts/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    await Product.findByIdAndDelete(id);
+    await SendProduct.findByIdAndDelete(id);
     res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
     res.status(400).json({ message: "Error deleting product", error });
   }
-};
-
-module.exports = { addProduct, getProducts, updateProduct, deleteProduct };
+});
+module.exports = router;

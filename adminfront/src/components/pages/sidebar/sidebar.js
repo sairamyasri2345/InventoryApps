@@ -124,6 +124,17 @@ const Sidebar = ({ darkMode, sidebarCollapsed }) => {
               <li className="px-4 list-item mb-2">
                 <Link
                   className="navlink text-white text-decoration-none d-flex"
+                  to="/layout/sendProducts"
+                >
+                  <i className="bi  bi-box-seam  icons "></i>
+                  <p className="px-3 list-item-text d-lg-block d-none">
+                  Send Products
+                  </p>
+                </Link>
+              </li>
+              <li className="px-4 list-item mb-2">
+                <Link
+                  className="navlink text-white text-decoration-none d-flex"
                   to="/layout/changepassword"
                 >
                   <i className="bi bi-key  icons "></i>

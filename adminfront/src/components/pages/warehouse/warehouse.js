@@ -6,15 +6,11 @@ const Warehouse = ({ darkMode, filterText }) => {
   const [show, setShow] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 8;
-  const [sendProductModal, setSendProductModal] = useState(false);
-  const [warehouseProjects, setWarehouseProjects] = useState([]);
   const [approvedCounts, setApprovedCounts] = useState({});
   const [editMode, setEditMode] = useState(false);
   const [products, setProducts] = useState([]);
   const [validationErrors, setValidationErrors] = useState({});
   const [currentProductId, setCurrentProductId] = useState(null);
-  const [selectedSite, setSelectedSite] = useState("");
-
   const [productData, setProductData] = useState({
     name: "",
   });
@@ -37,7 +33,7 @@ const Warehouse = ({ darkMode, filterText }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://13.232.162.43/api/warehouse/products",
+        "http://localhost:3003/api/warehouse/products",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -47,54 +43,9 @@ const Warehouse = ({ darkMode, filterText }) => {
       console.error("Error fetching products:", error);
     }
   };
-  const fetchWarehouseProjects = async () => {
-    try {
-      const warehouseRes = await axios.get(
-        "http://13.232.162.43/api/projects/projects"
-      );
-      console.log("Warehouse Projects:", warehouseRes.data);
-      setWarehouseProjects(warehouseRes.data);
-    } catch (error) {
-      console.error("Error fetching warehouse products:", error);
-    }
-  };
-  const fetchAppliedProducts = async () => {
-    try {
-      const response = await axios.get(
-        "http://13.232.162.43/api/appliedProducts"
-      );
-      const appliedProducts = await response.data;
-      console.log(appliedProducts, "prod");
 
-      const counts = appliedProducts.reduce((acc, item) => {
-        if (item.status.toLowerCase() === "approved") {
-          acc[item.productName] = (acc[item.productName] || 0) + item.quantity;
-        }
-        return acc;
-      }, {});
-      console.log(counts, "prod");
-      setApprovedCounts(counts);
-
-      console.log(counts, "prod");
-    } catch (error) {
-      console.error("Error fetching applied products:", error);
-    }
-  };
-  const handleProductSelection = (e) => {
-    const selectedProduct = warehouseProjects.find(
-      (project) => project.name === e.target.value
-    );
-
-    if (selectedProduct) {
-      setProductData({
-        name: selectedProduct.name,
-      });
-    }
-  };
   useEffect(() => {
     fetchProducts();
-    fetchWarehouseProjects();
-    fetchAppliedProducts();
   }, []);
 
   const handleSave = async () => {
@@ -106,12 +57,12 @@ const Warehouse = ({ darkMode, filterText }) => {
     try {
       if (editMode) {
         await axios.put(
-          `http://13.232.162.43/api/warehouse/${currentProductId}`,
+          `http://localhost:3003/api/warehouse/${currentProductId}`,
           productData
         );
       } else {
         await axios.post(
-          "http://13.232.162.43/api/warehouse/add-product",
+          "http://localhost:3003/api/warehouse/add-product",
           productData
         );
       }
@@ -122,24 +73,19 @@ const Warehouse = ({ darkMode, filterText }) => {
     }
   };
 
-  const handleSendProductModalShow = () => setSendProductModal(true);
-  const handleSendProductModalClose = () => setSendProductModal(false);
   const handleEdit = (product) => {
     setEditMode(true);
     setCurrentProductId(product._id);
     setProductData({
       name: product.name,
     });
+
     handleShow();
-  };
-  const handleSendProduct = () => {
-    console.log("Sending products to:", selectedSite);
-    handleSendProductModalClose();
   };
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://13.232.162.43/api/warehouse/${id}`);
+      await axios.delete(`http://localhost:3003/api/warehouse/${id}`);
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -192,13 +138,6 @@ const Warehouse = ({ darkMode, filterText }) => {
           >
             <i className="bi bi-plus-lg px-1"></i> Add Product
           </button>
-
-          <button
-            onClick={handleSendProductModalShow}
-            className="btn btn-success mb-4"
-          >
-            <i className="bi bi-plus-lg px-1"></i> Send Products
-          </button>
         </div>
 
         <Modal show={show} onHide={handleClose}>
@@ -235,34 +174,7 @@ const Warehouse = ({ darkMode, filterText }) => {
             </Button>
           </Modal.Footer>
         </Modal>
-        <Modal show={sendProductModal} onHide={handleSendProductModalClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Send Product to Site</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group>
-                <Form.Label>Select Project</Form.Label>
-                <Form.Select name="name" onChange={handleProductSelection}>
-                  <option value="">Select Project</option>
-                  {warehouseProjects.map((project) => (
-                    <option key={project._id} value={project.name}>
-                      {project.name}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleSendProductModalClose}>
-              Cancel
-            </Button>
-            <Button variant="success" onClick={handleSendProduct}>
-              Send
-            </Button>
-          </Modal.Footer>
-        </Modal>
+
         <Table bordered hover responsive>
           <thead>
             <tr>
