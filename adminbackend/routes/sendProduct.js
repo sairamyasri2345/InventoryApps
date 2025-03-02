@@ -5,17 +5,11 @@ const SendProduct = require("../models/sendproduct");
 // Endpoint to store sent products
 router.post('/sendProducts', async (req, res) => {
   try {
-    const { name, quantity, sendProduct } = req.body;
-   
+    const products = req.body;
 
-    const newProduct = new SendProduct ({
-      name,
-      quantity,
-   sendProduct
-    });
+    const savedProducts = await SendProduct.insertMany(products);
 
-    await newProduct.save();
-    res.status(201).json(newProduct);
+    res.status(201).json(savedProducts);
   } catch (error) {
     res.status(400).json({ message: "Error adding product", error });
   }

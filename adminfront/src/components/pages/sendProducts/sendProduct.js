@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Table, Form } from "react-bootstrap";
+import { Modal, Button, Table, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
 import axios from "axios";
 
 const SendProduct = ({ darkMode, filterText }) => {
@@ -15,13 +15,25 @@ const SendProduct = ({ darkMode, filterText }) => {
   const [validationErrors, setValidationErrors] = useState({});
   const [currentProductId, setCurrentProductId] = useState(null);
   const [selectedSite, setSelectedSite] = useState("");
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const [sendsData, setSendsData] = useState({
     name: "",
     sendProduct: "",
     quantity: "",
   });
 
-  const sendhandleShow = () => setSendProductModal(true);
+  const sendhandleShow = () => {
+    setEditMode(false);
+    setCurrentProductId(null);
+    setSendsData({
+      name: "",
+      sendProduct: "",
+      quantity: "",
+    });
+    setSelectedProducts([]); 
+    setSendProductModal(true);
+  };
+  
   const handleClose = () => {
     setSendProductModal(false);
     setSendsData({
@@ -92,7 +104,7 @@ const SendProduct = ({ darkMode, filterText }) => {
     const selectedProduct = sendsProjects.find(
       (product) => product.name === e.target.value
     );
-
+  
     if (selectedProduct) {
       setSendsData((prevData) => ({
         ...prevData,
@@ -104,17 +116,28 @@ const SendProduct = ({ darkMode, filterText }) => {
   const handleEdit = (product) => {
     setEditMode(true);
     setCurrentProductId(product._id);
+    
     setSendsData({
       name: product.name,
+      sendProduct: product.sendProduct.map((p) => p.productName),
     });
-
-    sendhandleShow();
+  
+    setSelectedProducts(
+      product.sendProduct.map((p) => ({
+        name: p.productName,
+        quantity: p.quantity
+      }))
+    );
+  
+    setSendProductModal(true);
   };
+  
+  
 
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:3003/api/sendProducts/${id}`
+        `http://localhost:3003/api/sendProducts/sendProducts/${id}`
       );
       fetchSentProducts();
     } catch (error) {
@@ -126,91 +149,70 @@ const SendProduct = ({ darkMode, filterText }) => {
     fetchSentProducts();
     fetchWarehouseProjects();
   }, []);
-
   const sendHandleSave = async () => {
     const errors = {};
-
-    if (!sendsData.name) errors.name = "Product name is required.";
-    if (!sendsData.quantity || parseInt(sendsData.quantity) <= 0)
-      errors.quantity = "Valid quantity is required.";
-    if (!sendsData.sendProduct)
-      errors.sendProduct = "Project Name is required.";
-
+  
+    if (!sendsData.name) errors.name = "Project name is required.";
+    if (selectedProducts.length === 0) errors.sendProduct = "Select at least one product.";
+  
+    selectedProducts.forEach((product, index) => {
+      if (!product.quantity || parseInt(product.quantity) <= 0) {
+        errors[`quantity${index}`] = "Valid quantity is required.";
+      }
+    });
+  
     setValidationErrors(errors);
-
-    if (Object.keys(errors).length > 0) {
-      console.log("Validation errors:", errors);
-      return;
-    }
-
+    if (Object.keys(errors).length > 0) return;
+  
     try {
-      console.log("Sending Data:", sendsData);
+      const payload = {
+        name: sendsData.name,
+        sendProduct: selectedProducts.map((product) => ({
+          productName: product.name,
+          quantity: parseInt(product.quantity, 10) || 0,
+        })),
+      };
+  
+      console.log("Sending Data:", payload);
+  
+      let response;
       if (editMode) {
-        await axios.put(
+        response = await axios.put(
           `http://localhost:3003/api/sendProducts/sendProducts/${currentProductId}`,
-          sendsData
+          payload
         );
       } else {
-        await axios.post(
+        response = await axios.post(
           "http://localhost:3003/api/sendProducts/sendProducts",
-          sendsData
+          payload
         );
       }
-
-      setSendProducts([...sendproducts, sendsData]);
-
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        "http://localhost:3003/api/sendProducts/sendProducts",
-        sendsData,
-        { headers: { Authorization: `Bearer ${token}` } }
+  
+      // Update state instead of refetching data
+      setSendProducts((prev) =>
+        editMode
+          ? prev.map((item) =>
+              item._id === currentProductId ? response.data : item
+            )
+          : [...prev, response.data]
       );
-
-      console.log("API Response:", response.data);
-
-      fetchProducts();
+      fetchSentProducts();
+      fetchProducts()
       handleSendProductModalClose();
     } catch (error) {
-      console.error("Error sending product data:", error);
+      console.error("Error sending product data:", error.response?.data || error);
     }
   };
-
-  // const handleSave = async () => {
-  //   const errors = {};
-  //   if (!productData.name) errors.name = "Product name is required.";
-
-  //   setValidationErrors(errors);
-  //   if (Object.keys(errors).length > 0) return;
-  //   try {
-  //     if (editMode) {
-  //       await axios.put(
-  //         `http://localhost:3003/api/warehouse/${currentProductId}`,
-  //         productData
-  //       );
-  //     } else {
-  //       await axios.post(
-  //         "http://localhost:3003/api/warehouse/add-product",
-  //         productData
-  //       );
-  //     }
-  //     fetchProducts();
-  //     handleClose();
-  //   } catch (error) {
-  //     console.error("Error saving product:", error);
-  //   }
-  // };
+  
+  
+  
+  
 
   const handleSendProductModalShow = () => setSendProductModal(true);
   const handleSendProductModalClose = () => setSendProductModal(false);
 
-  // const handleSendProduct = async () => {
-  //   console.log("Sending product details:", productData);
-
-  //   await sendHandleSave();
-  // };
-
   const filteredProducts = sendproducts.filter((product) =>
-    product.name.toLowerCase().includes(filterText.toLowerCase())
+    product.name?.toLowerCase().includes(filterText?.toLowerCase())
   );
 
   // Pagination logic
@@ -243,6 +245,21 @@ const SendProduct = ({ darkMode, filterText }) => {
 
     return pageRange;
   };
+  const handleCheckboxChange = (product) => {
+    setSelectedProducts((prevSelected) => {
+      const isSelected = prevSelected.some((p) => p._id === product._id);
+      if (isSelected) {
+        return prevSelected.filter((p) => p._id !== product._id);
+      } else {
+        return [...prevSelected, { ...product, quantity: 1 }];
+      }
+    });
+  };
+  
+  
+  
+  
+
   return (
     <div className={`container-fluid ${darkMode ? "dark-mode" : ""}`}>
       <div className="card p-3 m-3">
@@ -264,43 +281,66 @@ const SendProduct = ({ darkMode, filterText }) => {
           </Modal.Header>
           <Modal.Body>
             <Form>
+            <Form.Group className="mb-2">
+  <Form.Label>Select Project</Form.Label>
+  <Form.Select 
+    name="name" 
+    value={sendsData.name} 
+    onChange={handleProductSelection}
+  >
+    <option value="">Select Project</option>
+    {warehouseProjects.map((project) => (
+      <option key={project._id} value={project.name}>
+        {project.name}
+      </option>
+    ))}
+  </Form.Select>
+</Form.Group>
+
               <Form.Group className="mb-2">
-                <Form.Label>Select Project</Form.Label>
-                <Form.Select name="name" onChange={handleProductSelection}>
-                  <option value="">Select Project</option>
-                  {warehouseProjects.map((project) => (
-                    <option key={project._id} value={project.name}>
-                      {project.name}
-                    </option>
+                <Form.Label>Select Products</Form.Label>
+                {sendsProjects.map((product) => (
+                  <Form.Check
+                    key={product._id}
+                    type="checkbox"
+                    label={product.name}
+                    checked={selectedProducts.some((p) => p._id === product._id)}
+                    onChange={() => {handleCheckboxChange(product)
+                     
+                    }}
+
+                  />
+                ))}
+                 <Form.Control
+    type="hidden"
+    name="sendProduct"
+    value={sendsData.sendProduct}  />
+              </Form.Group>
+              {selectedProducts.map((product, index) => (
+           <Form.Group key={product._id} className="mb-2">
+           <Form.Label>{product.name} Quantity</Form.Label>
+           <Form.Control
+             type="number"
+             name={`quantity${index}`}
+             value={product.quantity || ""}
+             onChange={(e) => {
+               const newQuantity = e.target.value;
+               setSelectedProducts((prevSelected) =>
+                 prevSelected.map((p) =>
+                   p._id === product._id ? { ...p, quantity: newQuantity } : p
+                 )
+               );
+             }}
+             placeholder="Enter quantity"
+           />
+           {validationErrors[`quantity${index}`] && (
+             <Form.Text className="text-danger">
+               {validationErrors[`quantity${index}`]}
+             </Form.Text>
+           )}
+         </Form.Group>
+         
                   ))}
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-2">
-                <Form.Label>Select Product</Form.Label>
-                <Form.Select name="sendProduct" onChange={handlesendSelection}>
-                  <option value="">Select Product</option>
-                  {sendsProjects.map((project) => (
-                    <option key={project._id} value={project.name}>
-                      {project.name}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-2">
-                <Form.Label>Quantity</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="quantity"
-                  value={sendsData.quantity}
-                  onChange={handleChange}
-                  placeholder="Enter quantity"
-                />
-                {validationErrors.quantity && (
-                  <Form.Text className="text-danger">
-                    {validationErrors.quantity}
-                  </Form.Text>
-                )}
-              </Form.Group>
             </Form>
           </Modal.Body>
           <Modal.Footer>
@@ -322,34 +362,51 @@ const SendProduct = ({ darkMode, filterText }) => {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((product, index) => {
-              const approvedCount = approvedCounts[product.name] || 0;
+ 
+          {currentData.map((product, index) => (
+      <tr key={product._id}>
+     
+    
+        <td className="text-center">{product.name}</td>
+        <td className="text-center">{product.sendProduct?.map(p => p.productName).join(", ")}</td>
+        <td className="text-center"> 
+  <OverlayTrigger
+    placement="top"
+    overlay={
+      <Tooltip>
+        {product.sendProduct?.length > 0
+          ? product.sendProduct.map((p) => p.productName).join(", ")
+          : "No product assigned"}
+      </Tooltip>
+    }
+  >
+    <span className="quantity-cell">
+      {product.sendProduct?.length > 0 ? product.sendProduct.map((p) => p.quantity).join(", ") : "0"}
+    </span>
+  </OverlayTrigger>
+</td>
 
-              return (
-                <tr key={product._id}>
-                  <td className="text-center">{product.name}</td>
-                  <td className="text-center">{product.sendProduct}</td>
-                  <td className="text-center">{product.quantity}</td>
-                  <td className="text-center">
-                    <Button
-                      variant="warning"
-                      onClick={() => handleEdit(product)}
-                      className="btn-sm "
-                    >
-                      <i className="bi bi-pen text-white"></i>
-                    </Button>{" "}
-                    <Button
-                      variant="danger"
-                      onClick={() => handleDelete(product._id)}
-                      className="btn-sm"
-                    >
-                      <i className="bi bi-trash"></i>
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
+        <td className="text-center">
+          <Button
+            variant="warning"
+            onClick={() => handleEdit(product)}
+            className="btn-sm "
+          >
+            <i className="bi bi-pen text-white"></i>
+          </Button>{" "}
+          <Button
+            variant="danger"
+            onClick={() => handleDelete(product._id)}
+            className="btn-sm"
+          >
+            <i className="bi bi-trash"></i>
+          </Button>
+        </td>
+      </tr>
+    
+      ))}
+</tbody>
+
         </Table>
         <div className="pagination d-flex justify-content-center mt-3">
           <button
