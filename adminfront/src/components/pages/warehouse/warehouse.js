@@ -33,7 +33,7 @@ const Warehouse = ({ darkMode, filterText }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:3003/api/warehouse/products",
+        "https://inventoryappsatmos-1xdp.onrender.com/api/warehouse/products",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -57,12 +57,12 @@ const Warehouse = ({ darkMode, filterText }) => {
     try {
       if (editMode) {
         await axios.put(
-          `http://localhost:3003/api/warehouse/${currentProductId}`,
+          `https://inventoryappsatmos-1xdp.onrender.com/api/warehouse/${currentProductId}`,
           productData
         );
       } else {
         await axios.post(
-          "http://localhost:3003/api/warehouse/add-product",
+          "https://inventoryappsatmos-1xdp.onrender.com/api/warehouse/add-product",
           productData
         );
       }
@@ -85,7 +85,7 @@ const Warehouse = ({ darkMode, filterText }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3003/api/warehouse/${id}`);
+      await axios.delete(`https://inventoryappsatmos-1xdp.onrender.com/api/warehouse/${id}`);
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);

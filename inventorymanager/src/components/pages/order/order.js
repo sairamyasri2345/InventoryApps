@@ -16,7 +16,7 @@ const AdminProducts = ({ filterText, darkMode }) => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "http://localhost:3003/api/appliedProducts",
+          "https://inventoryappsatmos-1xdp.onrender.com/api/appliedProducts",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -33,7 +33,7 @@ const AdminProducts = ({ filterText, darkMode }) => {
   const updateStatus = async (id, newStatus) => {
     try {
       await axios.put(
-        `http://localhost:3003/api/appliedProducts/update-status/${id}`,
+        `https://inventoryappsatmos-1xdp.onrender.com/api/appliedProducts/update-status/${id}`,
         { status: newStatus }
       );
       setAppliedProducts(

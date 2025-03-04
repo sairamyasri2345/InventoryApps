@@ -8,7 +8,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:3003/api/products/products');
+        const response = await fetch('https://inventoryappsatmos-1xdp.onrender.com/api/products/products');
         const result = await response.json();
         if (Array.isArray(result)) {
           setProducts(result);
@@ -22,7 +22,7 @@ const Dashboard = () => {
 
     const fetchApprovedCounts = async () => {
       try {
-        const response = await axios.get("http://localhost:3003/api/appliedProducts");
+        const response = await axios.get("https://inventoryappsatmos-1xdp.onrender.com/api/appliedProducts");
         const appliedProducts = await response.data;
        console.log(appliedProducts,"prod")
         

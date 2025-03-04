@@ -40,7 +40,7 @@ const ProductManagement = ({ darkMode, filterText }) => {
   const fetchProducts = async () => {
     try {
       const productRes = await axios.get(
-        "http://localhost:3003/api/products/products"
+        "https://inventoryappsatmos-1xdp.onrender.com/api/products/products"
       );
 
       const allProducts = [...productRes.data];
@@ -53,7 +53,7 @@ const ProductManagement = ({ darkMode, filterText }) => {
   const fetchWarehouseProducts = async () => {
     try {
       const warehouseRes = await axios.get(
-        "http://localhost:3003/api/warehouse/products"
+        "https://inventoryappsatmos-1xdp.onrender.com/api/warehouse/products"
       );
       console.log("Warehouse Products:", warehouseRes.data);
       setWarehouseProducts(warehouseRes.data);
@@ -65,7 +65,7 @@ const ProductManagement = ({ darkMode, filterText }) => {
   const fetchAppliedProducts = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3003/api/appliedProducts"
+        "https://inventoryappsatmos-1xdp.onrender.com/api/appliedProducts"
       );
       const appliedProducts = await response.data;
       console.log(appliedProducts, "prod");
@@ -110,12 +110,12 @@ const ProductManagement = ({ darkMode, filterText }) => {
     try {
       if (editMode) {
         await axios.put(
-          `http://localhost:3003/api/products/${currentProductId}`,
+          `https://inventoryappsatmos-1xdp.onrender.com/api/products/${currentProductId}`,
           productData
         );
       } else {
         await axios.post(
-          "http://localhost:3003/api/products/add-product",
+          "https://inventoryappsatmos-1xdp.onrender.com/api/products/add-product",
           productData
         );
       }
@@ -142,7 +142,7 @@ const ProductManagement = ({ darkMode, filterText }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3003/api/products/${id}`);
+      await axios.delete(`https://inventoryappsatmos-1xdp.onrender.com/api/products/${id}`);
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);

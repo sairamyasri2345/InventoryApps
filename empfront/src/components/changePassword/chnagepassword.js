@@ -21,7 +21,7 @@ const ChangePassword = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:3003/api/employees/change-password",
+        "https://inventoryappsatmos-1xdp.onrender.com/api/employees/change-password",
         { oldPassword, newPassword },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );

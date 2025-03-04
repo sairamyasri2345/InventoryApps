@@ -74,7 +74,7 @@ const Login = () => {
       return;
     }
     try {
-      const response = await axios.post("http://localhost:3003/api/inventoryManager/login", { email, password }, {
+      const response = await axios.post("https://inventoryappsatmos-1xdp.onrender.com/api/inventoryManager/login", { email, password }, {
         headers: { "Content-Type": "application/json" }
       });
 
