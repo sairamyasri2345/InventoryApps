@@ -37,5 +37,7 @@ app.use('/api/appliedProducts', appliedProductRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/depts",departmentRoutes)
 app.use("/api/warehouse", warehouseRoutes )
+app.use("/uploads", express.static("uploads"));
+
 app.use("/api/sendProducts",sendProducts)
 app.listen(process.env.PORT, () => console.log(`Admin backend running on port 3003`));

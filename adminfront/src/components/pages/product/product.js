@@ -40,7 +40,7 @@ const ProductManagement = ({ darkMode, filterText }) => {
   const fetchProducts = async () => {
     try {
       const productRes = await axios.get(
-        "https://inventoryappsatmos-1xdp.onrender.com/api/products/products"
+        "http://localhost:3003/api/products/products"
       );
 
       const allProducts = [...productRes.data];
@@ -53,7 +53,7 @@ const ProductManagement = ({ darkMode, filterText }) => {
   const fetchWarehouseProducts = async () => {
     try {
       const warehouseRes = await axios.get(
-        "https://inventoryappsatmos-1xdp.onrender.com/api/warehouse/products"
+        "http://localhost:3003/api/warehouse/products"
       );
       console.log("Warehouse Products:", warehouseRes.data);
       setWarehouseProducts(warehouseRes.data);
@@ -65,7 +65,7 @@ const ProductManagement = ({ darkMode, filterText }) => {
   const fetchAppliedProducts = async () => {
     try {
       const response = await axios.get(
-        "https://inventoryappsatmos-1xdp.onrender.com/api/appliedProducts"
+        "http://localhost:3003/api/appliedProducts"
       );
       const appliedProducts = await response.data;
       console.log(appliedProducts, "prod");
@@ -110,12 +110,12 @@ const ProductManagement = ({ darkMode, filterText }) => {
     try {
       if (editMode) {
         await axios.put(
-          `https://inventoryappsatmos-1xdp.onrender.com/api/products/${currentProductId}`,
+          `http://localhost:3003/api/products/${currentProductId}`,
           productData
         );
       } else {
         await axios.post(
-          "https://inventoryappsatmos-1xdp.onrender.com/api/products/add-product",
+          "http://localhost:3003/api/products/add-product",
           productData
         );
       }
@@ -142,7 +142,7 @@ const ProductManagement = ({ darkMode, filterText }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://inventoryappsatmos-1xdp.onrender.com/api/products/${id}`);
+      await axios.delete(`http://localhost:3003/api/products/${id}`);
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -216,17 +216,30 @@ const ProductManagement = ({ darkMode, filterText }) => {
           </Modal.Header>
           <Modal.Body>
             <Form>
-              <Form.Group>
-                <Form.Label>Select Product</Form.Label>
-                <Form.Select name="name" onChange={handleProductSelection}>
-                  <option value="">Select a Product</option>
-                  {warehouseProducts.map((product) => (
-                    <option key={product._id} value={product.name}>
-                      {product.name}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
+            <Form.Group>
+  <Form.Label>Select Product</Form.Label>
+  <Form.Select name="name" onChange={handleProductSelection}>
+    <option value="">Select a Product</option>
+    {warehouseProducts.map((product) => (
+      <option key={product._id} value={product.name}>
+        {product.name}
+      </option>
+    ))}
+  </Form.Select>
+  
+  {productData.name && (
+    <div className="mt-3 d-flex align-items-center">
+      <img
+        src={`http://localhost:3003/${warehouseProducts.find(p => p.name === productData.name)?.image}`}
+        alt={productData.name}
+        style={{ width: "30px", height: "30px", objectFit: "cover", marginRight: "10px", borderRadius: "4px" }}
+      />
+   
+    </div>
+  )}
+</Form.Group>
+
+
 
               <Form.Group>
                 <Form.Label>Quantity</Form.Label>
@@ -305,7 +318,7 @@ const ProductManagement = ({ darkMode, filterText }) => {
               console.log("Available Quantity:", availableQuantity);
               return (
                 <tr key={product._id}>
-                  <td className="text-center">{product.name}</td>
+                  <td className="text-center">{product.image}{product.name}</td>
                   <td className="text-center">{product.quantity}</td>
                   <td className="text-center">{availableQuantity}</td>
                   <td className="text-center">

@@ -1,16 +1,21 @@
 const Product = require("../models/warehouse");
-
+const upload = require("../controllers/upload");
 // Add product
 const addProduct = async (req, res) => {
   try {
-    const product = new Product({ ...req.body });
+    const { name } = req.body;
+    const image = req.file ? req.file.path : null; // multer will provide the file path
+
+    if (!name || !image) {
+      return res.status(400).json({ message: "Name and image are required" });
+    }
+
+    const product = new Product({ name, image });
     await product.save();
 
     res.status(201).json({
       message: "Product added successfully",
-      product: {
-        ...product._doc,
-      },
+      product: product,
     });
   } catch (error) {
     console.error("Error adding product:", error);
