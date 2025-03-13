@@ -226,22 +226,20 @@ const ProductManagement = ({ darkMode, filterText }) => {
       </option>
     ))}
   </Form.Select>
-  
+
   {productData.name && (
     <div className="mt-3 d-flex align-items-center">
       <img
         src={`http://localhost:3003/${warehouseProducts.find(p => p.name === productData.name)?.image}`}
         alt={productData.name}
-        style={{ width: "30px", height: "30px", objectFit: "cover", marginRight: "10px", borderRadius: "4px" }}
+        style={{ width: "50px", height: "50px", objectFit: "cover", marginRight: "10px", borderRadius: "4px" }}
       />
-   
+      <span>{productData.name}</span>
     </div>
   )}
 </Form.Group>
 
-
-
-              <Form.Group>
+ <Form.Group>
                 <Form.Label>Quantity</Form.Label>
                 <Form.Control
                   type="number"
