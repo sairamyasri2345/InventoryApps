@@ -75,7 +75,7 @@ const EmpLogin = () => {
       return;
     }
     try {
-      const response = await axios.post('https://inventoryappsatmos-1xdp.onrender.com/api/employees/login', { email, password });
+      const response = await axios.post('http://localhost:3003/api/employees/login', { email, password });
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('employeeID', response.data.employee.employeeID);

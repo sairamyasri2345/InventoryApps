@@ -27,7 +27,7 @@ const AppliedProducts = ({ userData, filterText }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "https://inventoryappsatmos-1xdp.onrender.com/api/products/products",
+        "http://localhost:3003/api/products/products",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -40,7 +40,7 @@ const AppliedProducts = ({ userData, filterText }) => {
   const fetchAllAppliedProducts = async () => {
     try {
       const response = await axios.get(
-        "https://inventoryappsatmos-1xdp.onrender.com/api/appliedProducts/all"
+        "http://localhost:3003/api/appliedProducts/all"
       );
       setAppliedProducts(response.data);
     } catch (error) {
@@ -51,7 +51,7 @@ const AppliedProducts = ({ userData, filterText }) => {
   const fetchAppliedProducts = async () => {
     try {
       const response = await axios.get(
-        `https://inventoryappsatmos-1xdp.onrender.com/api/appliedProducts/${employeeID}`
+        `http://localhost:3003/api/appliedProducts/${employeeID}`
       );
       setAppliedProducts(response.data);
     } catch (error) {
@@ -70,7 +70,7 @@ const AppliedProducts = ({ userData, filterText }) => {
   const fetchAllAppliedProduct = async () => {
     try {
       const response = await axios.get(
-        "https://inventoryappsatmos-1xdp.onrender.com/api/appliedProducts"
+        "http://localhost:3003/api/appliedProducts"
       );
       const appliedProducts = await response.data;
       console.log(appliedProducts, "prod");
@@ -125,7 +125,7 @@ const AppliedProducts = ({ userData, filterText }) => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
-        `https://inventoryappsatmos-1xdp.onrender.com/api/appliedProducts/apply/${productId}`,
+        `http://localhost:3003/api/appliedProducts/apply/${productId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -185,7 +185,7 @@ const handleSaveProduct = async () => {
 
       if (editProduct) {
         await axios.put(
-          `https://inventoryappsatmos-1xdp.onrender.com/api/appliedProducts/apply/${editProduct._id}`,
+          `http://localhost:3003/api/appliedProducts/apply/${editProduct._id}`,
           {
             quantity,
             date,
@@ -200,7 +200,7 @@ const handleSaveProduct = async () => {
         );
       } else {
         const response = await axios.post(
-          "https://inventoryappsatmos-1xdp.onrender.com/api/appliedProducts/apply",
+          "http://localhost:3003/api/appliedProducts/apply",
           {
             employeeID,
             employeeName,

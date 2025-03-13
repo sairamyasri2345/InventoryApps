@@ -54,7 +54,7 @@ const fetchDepts=async()=>{
   try {
     const token = localStorage.getItem("token");
     const response = await axios.get(
-      "https://inventoryappsatmos-1xdp.onrender.com/api/depts/depts",
+      "http://localhost:3003/api/depts/depts",
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -69,7 +69,7 @@ const fetchDepts=async()=>{
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "https://inventoryappsatmos-1xdp.onrender.com/api/projects/projects",
+        "http://localhost:3003/api/projects/projects",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -96,12 +96,12 @@ const fetchDepts=async()=>{
     try {
       if (editMode) {
         await axios.put(
-          `https://inventoryappsatmos-1xdp.onrender.com/api/projects/${currentProjectId}`,
+          `http://localhost:3003/api/projects/${currentProjectId}`,
           projectData
         );
       } else {
         await axios.post(
-          "https://inventoryappsatmos-1xdp.onrender.com/api/projects/add-project",
+          "http://localhost:3003/api/projects/add-project",
           projectData
         );
       }
@@ -120,12 +120,12 @@ const fetchDepts=async()=>{
     try {
       if (editMode) {
         await axios.put(
-          `https://inventoryappsatmos-1xdp.onrender.com/api/depts/${currentProjectId}`,
+          `http://localhost:3003/api/depts/${currentProjectId}`,
           deptData
         );
       } else {
         await axios.post(
-          "https://inventoryappsatmos-1xdp.onrender.com/api/depts/add-dept",
+          "http://localhost:3003/api/depts/add-dept",
           deptData
         );
       }
@@ -161,7 +161,7 @@ const fetchDepts=async()=>{
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://inventoryappsatmos-1xdp.onrender.com/api/projects/${id}`);
+      await axios.delete(`http://localhost:3003/api/projects/${id}`);
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -169,7 +169,7 @@ const fetchDepts=async()=>{
   };
   const handleDeptDelete = async (id) => {
     try {
-      await axios.delete(`https://inventoryappsatmos-1xdp.onrender.com/api/depts/${id}`);
+      await axios.delete(`http://localhost:3003/api/depts/${id}`);
       fetchDepts();
     } catch (error) {
       console.error("Error deleting product:", error);

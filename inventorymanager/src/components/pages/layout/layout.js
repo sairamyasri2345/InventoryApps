@@ -45,7 +45,7 @@ const Layout = () => {
           return;
         }
 
-        const response = await fetch("https://inventoryappsatmos-1xdp.onrender.com/api/inventoryManager/me", {
+        const response = await fetch("http://localhost:3003/api/inventoryManager/me", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

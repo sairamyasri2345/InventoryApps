@@ -55,7 +55,7 @@ const EmpNavbar = ({
     const fetchNotificationCount = async () => {
       try {
         const response = await axios.get(
-          "https://inventoryappsatmos-1xdp.onrender.com/api/auth/notificationCount"
+          "http://localhost:3003/api/auth/notificationCount"
         );
         setNotificationCount(response.data.count);
       } catch (error) {
