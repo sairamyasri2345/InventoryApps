@@ -294,7 +294,7 @@ const ProductManagement = ({ darkMode, filterText }) => {
         <Table bordered hover responsive>
           <thead>
             <tr>
-              <th className="text-center">Product Name</th>
+              <th className="text-center">Product</th>
               <th className="text-center">Quantity</th>
               <th className="text-center">Stock</th>
               <th className="text-center">Date</th>
@@ -316,8 +316,18 @@ const ProductManagement = ({ darkMode, filterText }) => {
               console.log("Available Quantity:", availableQuantity);
               return (
                 <tr key={product._id}>
-                  <td className="text-center">{product.image}{product.name}</td>
-                  <td className="text-center">{product.quantity}</td>
+    <td className="text-center">
+  {warehouseProducts.find(p => p.name === product.name)?.image && (
+    <img
+      src={`http://localhost:3003/${
+        warehouseProducts.find(p => p.name === product.name)?.image
+      }`}
+      alt={product.name}
+      style={{ width: "50px", height: "50px", objectFit: "cover" }}
+    />
+  )}
+<span className="px-2">{product.name}</span>
+</td>     <td className="text-center">{product.quantity}</td>
                   <td className="text-center">{availableQuantity}</td>
                   <td className="text-center">
                     {new Date().toLocaleDateString()}

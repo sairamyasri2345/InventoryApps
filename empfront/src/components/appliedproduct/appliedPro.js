@@ -147,8 +147,8 @@ const AppliedProducts = ({ userData, filterText }) => {
     setDate(product.date);
     setShowModal(true);
   };
- 
-const handleSaveProduct = async () => {
+
+  const handleSaveProduct = async () => {
     if (!validateFields()) return;
 
     const product = products.find((p) => p._id === selectedProduct);
@@ -308,6 +308,25 @@ const handleSaveProduct = async () => {
                       {product.name}
                     </option>
                   ))}
+                  {products.name && (
+                    <div className="mt-3 d-flex align-items-center">
+                      <img
+                        src={`http://localhost:3003/${
+                          appliedProducts.find((p) => p.name === products.name)
+                            ?.image
+                        }`}
+                        alt={products.name}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          objectFit: "cover",
+                          marginRight: "10px",
+                          borderRadius: "4px",
+                        }}
+                      />
+                      <span>{products.name}</span>
+                    </div>
+                  )}
                 </Form.Control>
                 {errors.selectedProduct && (
                   <div className="text-danger">{errors.selectedProduct}</div>
