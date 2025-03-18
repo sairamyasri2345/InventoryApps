@@ -4,7 +4,7 @@ const upload = require("../controllers/upload");
 const addProduct = async (req, res) => {
   try {
     const { name } = req.body;
-    const image = req.file ? req.file.path : null; // multer will provide the file path
+    const image = req.file ? req.file.path : null; 
 
     if (!name || !image) {
       return res.status(400).json({ message: "Name and image are required" });
