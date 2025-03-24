@@ -55,7 +55,7 @@ const EmpNavbar = ({
     const fetchNotificationCount = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3003/api/auth/notificationCount"
+          "http://13.233.115.70:3003/api/auth/notificationCount"
         );
         setNotificationCount(response.data.count);
       } catch (error) {

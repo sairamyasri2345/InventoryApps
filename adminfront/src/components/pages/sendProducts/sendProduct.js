@@ -51,7 +51,7 @@ const SendProduct = ({ darkMode, filterText }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:3003/api/warehouse/products",
+        "http://13.233.115.70:3003/api/warehouse/products",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -65,7 +65,7 @@ const SendProduct = ({ darkMode, filterText }) => {
   const fetchWarehouseProjects = async () => {
     try {
       const warehouseRes = await axios.get(
-        "http://localhost:3003/api/projects/projects"
+        "http://13.233.115.70:3003/api/projects/projects"
       );
       console.log("Warehouse Projects:", warehouseRes.data);
       setWarehouseProjects(warehouseRes.data);
@@ -89,7 +89,7 @@ const SendProduct = ({ darkMode, filterText }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:3003/api/sendProducts",
+        "http://13.233.115.70:3003/api/sendProducts",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -137,7 +137,7 @@ const SendProduct = ({ darkMode, filterText }) => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:3003/api/sendProducts/sendProducts/${id}`
+        `http://13.233.115.70:3003/api/sendProducts/sendProducts/${id}`
       );
       fetchSentProducts();
     } catch (error) {
@@ -178,12 +178,12 @@ const SendProduct = ({ darkMode, filterText }) => {
       let response;
       if (editMode) {
         response = await axios.put(
-          `http://localhost:3003/api/sendProducts/sendProducts/${currentProductId}`,
+          `http://13.233.115.70:3003/api/sendProducts/sendProducts/${currentProductId}`,
           payload
         );
       } else {
         response = await axios.post(
-          "http://localhost:3003/api/sendProducts/sendProducts",
+          "http://13.233.115.70:3003/api/sendProducts/sendProducts",
           payload
         );
       }

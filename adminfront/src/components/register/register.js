@@ -91,7 +91,7 @@ const EmpSignUp = () => {
       if (!validateForm()) return;
 
       try {
-        const response = await axios.post("http://localhost:3003/api/auth/register", {
+        const response = await axios.post("http://13.233.115.70:3003/api/auth/register", {
           username: uname,
           email,
           password,

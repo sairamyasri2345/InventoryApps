@@ -40,4 +40,4 @@ app.use("/api/warehouse", warehouseRoutes )
 app.use("/uploads", express.static("uploads"));
 
 app.use("/api/sendProducts",sendProducts)
-app.listen(process.env.PORT, () => console.log(`Admin backend running on port 3003`));
+app.listen(process.env.PORT,'0.0.0.0', () => console.log(`Admin backend running on port 3003`));

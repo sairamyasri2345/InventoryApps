@@ -13,7 +13,7 @@
 //       const fetchOrders = async () => {
 //         try {
 //           const employeeID = localStorage.getItem('employeeID');
-//           const response = await axios.get(`http://localhost:3003/api/appliedProducts/${employeeID}`);
+//           const response = await axios.get(`http://13.233.115.70:3003/api/appliedProducts/${employeeID}`);
 //           setAppliedProducts(response.data);
 //         } catch (error) {
 //           console.error("Error fetching orders:", error);
@@ -64,7 +64,7 @@ const EmployeeOrders = ({ filterText, onFilterChange }) => {
     const fetchOrders = async () => {
       try {
         const employeeID = localStorage.getItem('employeeID');
-        const response = await axios.get(`http://localhost:3003/api/appliedProducts/${employeeID}`);
+        const response = await axios.get(`http://13.233.115.70:3003/api/appliedProducts/${employeeID}`);
         setAppliedProducts(response.data);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -120,7 +120,7 @@ const EmployeeOrders = ({ filterText, onFilterChange }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:3003/api/appliedProducts/received-status/${id}`,
+        `http://13.233.115.70:3003/api/appliedProducts/received-status/${id}`,
         { receivedStatus: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -43,7 +43,7 @@ const ProductManagement = ({ darkMode,  filterText}) => {
   const fetchProducts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:3003/api/products/products", {
+      const response = await axios.get("http://13.233.115.70:3003/api/products/products", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProducts(response.data);
@@ -54,7 +54,7 @@ const ProductManagement = ({ darkMode,  filterText}) => {
 
   const fetchAppliedProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:3003/api/appliedProducts");
+      const response = await axios.get("http://13.233.115.70:3003/api/appliedProducts");
       const appliedProducts = await response.data;
      console.log(appliedProducts,"prod")
       
@@ -94,9 +94,9 @@ const ProductManagement = ({ darkMode,  filterText}) => {
 
     try {
       if (editMode) {
-        await axios.put(`http://localhost:3003/api/products/${currentProductId}`, productData);
+        await axios.put(`http://13.233.115.70:3003/api/products/${currentProductId}`, productData);
       } else {
-        await axios.post("http://localhost:3003/api/products/add-product", productData);
+        await axios.post("http://13.233.115.70:3003/api/products/add-product", productData);
       }
       fetchProducts();
       handleClose();
@@ -120,7 +120,7 @@ const ProductManagement = ({ darkMode,  filterText}) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3003/api/products/${id}`);
+      await axios.delete(`http://13.233.115.70:3003/api/products/${id}`);
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);

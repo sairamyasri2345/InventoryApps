@@ -75,7 +75,7 @@ const EmpLogin = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:3003/api/employees/login', { email, password });
+      const response = await axios.post('http://13.233.115.70:3003/api/employees/login', { email, password });
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('employeeID', response.data.employee.employeeID);

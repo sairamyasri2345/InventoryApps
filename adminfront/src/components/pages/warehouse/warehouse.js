@@ -38,7 +38,7 @@ const Warehouse = ({ darkMode, filterText }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:3003/api/warehouse/products",
+        "http://13.233.115.70:3003/api/warehouse/products",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -71,13 +71,13 @@ const Warehouse = ({ darkMode, filterText }) => {
   
       if (editMode) {
         await axios.put(
-          `http://localhost:3003/api/warehouse/${currentProductId}`,
+          `http://13.233.115.70:3003/api/warehouse/${currentProductId}`,
           formData,
           config
         );
       } else {
         await axios.post(
-          "http://localhost:3003/api/warehouse/add-product",
+          "http://13.233.115.70:3003/api/warehouse/add-product",
           formData,
           config
         );
@@ -101,7 +101,7 @@ const Warehouse = ({ darkMode, filterText }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3003/api/warehouse/${id}`);
+      await axios.delete(`http://13.233.115.70:3003/api/warehouse/${id}`);
       fetchProducts();
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -211,7 +211,7 @@ const Warehouse = ({ darkMode, filterText }) => {
                 <td className="text-center">
                   {product.image && (
                     <img
-                      src={`http://localhost:3003/${product.image}`}
+                      src={`http://13.233.115.70:3003/${product.image}`}
                       alt={product.name}
                       style={{ width: "50px", height: "50px", objectFit: "cover" }}
                     />

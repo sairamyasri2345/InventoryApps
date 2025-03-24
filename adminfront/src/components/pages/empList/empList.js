@@ -104,7 +104,7 @@ const EmployeeManagement = ({ darkMode, filterText }) => {
 
   const fetchDepartment = async () => {
     try {
-      const deptRes = await axios.get("http://localhost:3003/api/depts/depts");
+      const deptRes = await axios.get("http://13.233.115.70:3003/api/depts/depts");
       console.log("Dept:", deptRes.data);
       setDeptsData(deptRes.data);
     } catch (error) {
@@ -174,7 +174,7 @@ const EmployeeManagement = ({ darkMode, filterText }) => {
   const fetchEmployees = async (page = 1, limit = pageSize) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:3003/api/employees", {
+      const response = await axios.get("http://13.233.115.70:3003/api/employees", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setEmployees(response.data);
@@ -198,7 +198,7 @@ const EmployeeManagement = ({ darkMode, filterText }) => {
         if (editMode) {
        
           const response = await axios.put(
-            `http://localhost:3003/api/employees/${currentEmployee._id}`,
+            `http://13.233.115.70:3003/api/employees/${currentEmployee._id}`,
             employeeData
           );
           if (response.status === 200) {
@@ -210,7 +210,7 @@ const EmployeeManagement = ({ darkMode, filterText }) => {
         } else {
          
           const response = await axios.post(
-            "http://localhost:3003/api/employees/add-employee",
+            "http://13.233.115.70:3003/api/employees/add-employee",
             employeeData
           );
           if (response.status === 201) {
@@ -251,7 +251,7 @@ const EmployeeManagement = ({ darkMode, filterText }) => {
   const handleDelete = async (id) => {
     console.log("Deleting employee with ID:", id);
     try {
-      await axios.delete(`http://localhost:3003/api/employees/${id}`);
+      await axios.delete(`http://13.233.115.70:3003/api/employees/${id}`);
       fetchEmployees(); // Refresh employee list after deletion
     } catch (error) {
       console.error("Error deleting employee:", error);
